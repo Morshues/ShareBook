@@ -1,0 +1,27 @@
+server:
+  port: 5566
+  shutdown: graceful
+  error:
+    include-message: always
+
+spring:
+  application:
+    name: ShareBook
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/sharebook}
+    username: ${DB_USERNAME:sharebook}
+    password: ${DB_PASSWORD:sharebookdev123}
+    driver-class-name: org.postgresql.Driver
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+  jpa:
+    hibernate:
+      ddl-auto: update
+logging:
+  level:
+    org.springframework.security: TRACE
