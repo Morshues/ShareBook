@@ -4,7 +4,7 @@ import com.morshues.sharebook.dto.CreateBookDTO
 import com.morshues.sharebook.dto.UpdateBookDTO
 import com.morshues.sharebook.model.Book
 import com.morshues.sharebook.service.BookService
-import com.morshues.sharebook.service.CustomOidcUserService
+import com.morshues.sharebook.service.CustomUserService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -13,7 +13,7 @@ import java.security.Principal
 @RestController
 @RequestMapping("/books")
 class BookController(
-    private val customOidcUserService: CustomOidcUserService,
+    private val customOidcUserService: CustomUserService,
     private val bookService: BookService,
 ) {
 

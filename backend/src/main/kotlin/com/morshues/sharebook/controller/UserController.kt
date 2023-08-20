@@ -1,13 +1,13 @@
 package com.morshues.sharebook.controller
 
-import com.morshues.sharebook.service.CustomOidcUserService
+import com.morshues.sharebook.service.CustomUserService
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 import java.security.Principal
 
 @RestController
 class UserController(
-    val userService: CustomOidcUserService,
+    val userService: CustomUserService,
 ) {
 
     @GetMapping("/user")

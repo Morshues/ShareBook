@@ -19,9 +19,17 @@ spring:
           google:
             client-id: ${GOOGLE_CLIENT_ID}
             client-secret: ${GOOGLE_CLIENT_SECRET}
+            scope:
+              - email
+              - profile
   jpa:
     hibernate:
       ddl-auto: update
+
+app:
+  client:
+    url: http://localhost:3000
+
 logging:
   level:
     org.springframework.security: TRACE
