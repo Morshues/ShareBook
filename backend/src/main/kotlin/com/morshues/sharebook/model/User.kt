@@ -3,7 +3,7 @@ package com.morshues.sharebook.model
 import jakarta.persistence.*
 import java.time.ZonedDateTime
 
-enum class OAuthProvider {
+enum class AuthProvider {
     LOCAL,
     GOOGLE
 }
@@ -17,19 +17,19 @@ data class User(
     val id: Long? = null,
 
     @Enumerated(EnumType.STRING)
-    private val provider: OAuthProvider = OAuthProvider.LOCAL,
+    val provider: AuthProvider = AuthProvider.LOCAL,
 
     @Column(name = "provider_id")
     private val providerId: String? = null,
 
-    private val email: String,
+    val email: String,
 
-    private val username: String,
+    var username: String,
 
-    private val password: String? = null,
+    val password: String = "",
 
     @Column(name = "profile_picture_url")
-    private val profilePictureUrl: String? = null,
+    var profilePictureUrl: String? = null,
 
     @Column(name = "created_at")
     private val createdAt: ZonedDateTime = ZonedDateTime.now(),

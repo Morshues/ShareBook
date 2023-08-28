@@ -3,6 +3,8 @@ server:
   shutdown: graceful
   error:
     include-message: always
+  cors:
+    allowed-origins: http://localhost:3000
 
 spring:
   application:
@@ -27,8 +29,20 @@ spring:
       ddl-auto: update
 
 app:
+  auth:
+    tokenSecret: c24dbb751b5e3b9526c56695e48e4e8971ee29229f3e4b979a0733672edf0efdb88ef6c1b7d662ea374afcea9af1203ef863a6ff01dc4b67ee0b9a4ee53a4c0c
+    tokenExpirationMsec: 864000000
   client:
     url: http://localhost:3000
+  oauth2:
+    # After successfully authenticating with the OAuth2 Provider,
+    # we'll be generating an auth token for the user and sending the token to the
+    # redirectUri mentioned by the client in the /oauth2/authorize request.
+    # We're not using cookies because they won't work well in mobile clients.
+    authorizedRedirectUris:
+      - http://localhost:3000/oauth2/redirect
+      - myandroidapp://oauth2/redirect
+      - myiosapp://oauth2/redirect
 
 logging:
   level:
