@@ -9,6 +9,8 @@ interface BookSharerRepository : CrudRepository<BookSharer, Long> {
 
     fun findByUserAndBook(user: User, book: Book): BookSharer?
 
+    fun deleteAllByBook(book: Book)
+
     fun save(bookSharer: BookSharer): BookSharer
 
 }

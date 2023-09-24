@@ -18,6 +18,9 @@ enum class SharerRole {
     OWNER,
 }
 
+val EditableRole = listOf(SharerRole.EDITOR, SharerRole.OWNER)
+val ViewableRole = listOf(SharerRole.VIEWER, SharerRole.EDITOR, SharerRole.OWNER)
+
 @Entity
 @Table(name = "booksharers")
 data class BookSharer(
@@ -25,12 +28,12 @@ data class BookSharer(
     val id: BookSharerId,
 
     @ManyToOne
-    @MapsId("id")
+    @MapsId("userId")
     @JoinColumn(name = "user_id")
     val user: User,
 
     @ManyToOne
-    @MapsId("id")
+    @MapsId("bookId")
     @JoinColumn(name = "book_id")
     val book: Book,
 
@@ -40,7 +43,9 @@ data class BookSharer(
     @Column(name = "created_at")
     private val createdAt: ZonedDateTime = ZonedDateTime.now(),
 ) {
-    fun canEdit(): Boolean {
-        return role == SharerRole.EDITOR || role == SharerRole.OWNER
+
+    fun hasRole(roles: List<SharerRole>): Boolean {
+        return roles.contains(this.role)
     }
+
 }

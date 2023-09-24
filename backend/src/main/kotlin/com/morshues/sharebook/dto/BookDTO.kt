@@ -5,8 +5,15 @@ data class CreateBookDTO(
     val description: String,
 )
 
-data class UpdateBookDTO(
+data class EditBookDTO(
     val id: Long,
     val name: String,
     val description: String,
+)
+
+data class ShowBookDTO(
+    val id: Long,
+    val name: String,
+    val description: String,
+    val createdAt: Long,
 )

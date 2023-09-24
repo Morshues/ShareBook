@@ -1,6 +1,7 @@
 package com.morshues.sharebook.model
 
 import jakarta.persistence.*
+import jakarta.validation.constraints.NotBlank
 import java.time.ZonedDateTime
 
 @Entity
@@ -11,6 +12,7 @@ data class Book(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
 
+    @field:NotBlank(message = "Name must not be blank")
     var name: String,
 
     var description: String,
