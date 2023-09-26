@@ -1,4 +1,4 @@
-import '../../app/globals.css'
+import '@/app/globals.css'
 import { GOOGLE_AUTH_URL } from '@/constants';
 
 export default function Login() {

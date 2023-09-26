@@ -60,7 +60,7 @@ class BookController(
         return ResponseEntity(response, HttpStatus.CREATED)
     }
 
-    @PostMapping("/update")
+    @PatchMapping("/update")
     fun updateBook(
         @CurrentUser userPrincipal: UserPrincipal,
         @RequestBody bookDTO: EditBookDTO,

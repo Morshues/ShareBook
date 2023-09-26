@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { setToken } from "@/util/APIUtils";
+import { setToken } from "@/api/ApiClient";
 
 const OAuth2RedirectHandler: React.FC = () => {
   const router = useRouter();

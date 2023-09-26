@@ -1,49 +1,42 @@
-import '../../app/globals.css'
 import React, { useEffect } from 'react';
 import { useRouter } from "next/router";
-import { clearToken } from "@/util/APIUtils";
+import { Button } from "@nextui-org/react";
+
+import { clearToken } from "@/api/ApiClient";
 import { useCurrentUser } from "@/hooks/auth/useCurrentUser";
+import { useBookList } from "@/hooks/useBookList";
+
+import UserProfile from "@/components/UserProfile";
+import BookList from "@/components/BookList";
+import CreateBook from "@/components/modals/CreateBook";
 
 export default function User() {
   const router = useRouter();
   const { user: currentUser, loaded, fetchUser, isAuthenticated } = useCurrentUser();
-
-  const signOut = () => {
-    clearToken();
-    redirect();
-  }
-
-  const redirect = () => {
-    router.push('/login').then(/* Do Nothing */);
-  };
+  const { bookList, insertBook, deleteBook } = useBookList();
 
   useEffect(() => {
     if (loaded && !isAuthenticated) {
-      redirect();
+      redirectToLogin();
     }
   }, [isAuthenticated, loaded]);
 
+  const signOut = () => {
+    clearToken();
+    redirectToLogin();
+  }
+
+  const redirectToLogin = () => {
+    router.push('/login').then(/* Do Nothing */);
+  };
+
   return (
     <div>
-      <button onClick={signOut}>Sign out</button>
-      <button onClick={fetchUser}>Refresh</button>
-      <div>
-        {currentUser && (
-          <div>
-            <div>
-              <strong>Name:</strong> {currentUser.name}
-            </div>
-            <div>
-              <strong>Email:</strong> {currentUser.email}
-            </div>
-            {currentUser.pictureUrl && (
-              <div>
-                <img src={currentUser.pictureUrl} alt={currentUser.name} width="100" />
-              </div>
-            )}
-          </div>
-        )}
-      </div>
+      <Button onClick={signOut}>Sign out</Button>
+      <Button onClick={fetchUser}>Refresh</Button>
+      <CreateBook onBookCreated={insertBook} />
+      <UserProfile user={currentUser} />
+      <BookList bookList={bookList} onBookDelete={deleteBook} />
     </div>
   )
 }
