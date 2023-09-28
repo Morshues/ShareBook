@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
-import { useRouter } from 'next/router';
+import { useParams } from 'next/navigation';
 
 import { getBook } from "@/api/ApiClient";
 import { Book } from "@/types/book";
 
 export const useBook = () => {
-  const router = useRouter();
+  const routeParams = useParams();
   const [id, setId] = useState<number | null>(null);
   const [book, setBook] = useState<Book | null>(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setId(Number(router.query.id));
-  }, [router.query]);
+    setId(Number(routeParams?.id));
+  }, [routeParams]);
 
   useEffect(() => {
     if (loading) {

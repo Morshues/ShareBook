@@ -1,3 +1,5 @@
+'use client'
+
 import { useBook } from "@/hooks/useBook";
 
 export default function Book() {

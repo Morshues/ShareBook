@@ -1,5 +1,7 @@
+'use client'
+
 import React, { useEffect } from 'react';
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { Button } from "@nextui-org/react";
 
 import { clearToken } from "@/api/ApiClient";
@@ -27,7 +29,7 @@ export default function User() {
   }
 
   const redirectToLogin = () => {
-    router.push('/login').then(/* Do Nothing */);
+    router.push('/login');
   };
 
   return (
