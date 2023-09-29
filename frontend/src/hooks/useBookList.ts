@@ -29,10 +29,7 @@ export const useBookList = () => {
   }
 
   const updateBook = (updatedBook: Book) => {
-    const newBookList = bookList.map(book =>
-      book.id === updatedBook.id ? updatedBook : book
-    );
-    setBookList(newBookList);
+    setBookList(prevBookList => prevBookList.map(book => book.id === updatedBook.id ? updatedBook : book))
   }
 
   const deleteBook = (id: number) => {

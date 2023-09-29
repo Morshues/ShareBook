@@ -4,12 +4,12 @@ import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from 
 import { RiDeleteBin7Fill } from "react-icons/ri";
 import { MdModeEditOutline } from "react-icons/md";
 
-import DeleteBook from "@/components/modals/DeleteBook";
 import { Book } from "@/types/book";
 
 type BookListProps = {
   bookList: Book[];
-  onBookDelete?: (id: number) => void;
+  onEditBook: (book: Book) => void;
+  onDeleteBook: (book: Book) => void;
 };
 
 const bookColumns = [
@@ -19,7 +19,15 @@ const bookColumns = [
   {name: "Actions", uid: "actions"},
 ];
 
-function BookList({ bookList, onBookDelete }: BookListProps) {
+function BookList({ bookList, onEditBook, onDeleteBook }: BookListProps) {
+  const handleEditClick = (book: Book) => () => {
+    onEditBook(book);
+  }
+
+  const handleDeleteClick = (book: Book) => () => {
+    onDeleteBook(book);
+  }
+
   const renderCell = React.useCallback((book: Book, columnKey: React.Key) => {
     switch (columnKey) {
       case "name":
@@ -36,14 +44,12 @@ function BookList({ bookList, onBookDelete }: BookListProps) {
       case "actions":
         return (
           <div className="relative flex items-center gap-2">
-            <span className="text-lg text-default-400 cursor-pointer hover:opacity-50">
+            <span className="text-lg text-default-400 cursor-pointer hover:opacity-50" onClick={handleEditClick(book)}>
               <MdModeEditOutline />
             </span>
-            <DeleteBook book={book} onBookDeleted={onBookDelete} renderTrigger={(props) =>
-              <span className="text-lg text-danger cursor-pointer hover:opacity-50" onClick={props.onPress}>
-                <RiDeleteBin7Fill />
-              </span>
-            } />
+            <span className="text-lg text-danger cursor-pointer hover:opacity-50" onClick={handleDeleteClick(book)}>
+              <RiDeleteBin7Fill />
+            </span>
           </div>
         );
       default:

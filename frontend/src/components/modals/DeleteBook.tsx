@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { forwardRef, useImperativeHandle, useState } from 'react';
 import {
   Modal,
   ModalContent,
@@ -12,38 +12,45 @@ import {
 import { deleteBook } from "@/api/ApiClient";
 import { Book } from "@/types/book";
 
+type DeleteBookRef = {
+  open: (book: Book) => void;
+}
+
 type DeleteBookProps = {
-  book: Book;
   onBookDeleted?: (id: number) => void;
-  renderTrigger?: (props: { onPress: () => void }) => ReactNode;
 };
 
-function DeleteBook({ book, onBookDeleted, renderTrigger }: DeleteBookProps) {
+const DeleteBook = forwardRef<DeleteBookRef, DeleteBookProps>(({ onBookDeleted }: DeleteBookProps, ref) => {
   const {isOpen, onOpen, onClose, onOpenChange} = useDisclosure();
+  const [book, setBook] = useState<Book | null>(null);
+
+  const open = (book: Book) => {
+    setBook(book);
+    onOpen();
+  };
+
+  useImperativeHandle(ref, () => ({
+    open
+  }));
 
   const handleDelete = (): void => {
-    deleteBook(book.id).then(response => {
+    deleteBook(book!!.id).then(() => {
       if (onBookDeleted) {
         onClose();
-        onBookDeleted(book.id);
+        onBookDeleted(book!!.id);
       }
     })
   };
 
   return (
     <>
-      {renderTrigger ?
-        renderTrigger({ onPress: onOpen })
-        :
-        <Button onPress={onOpen}>Delete Book</Button>
-      }
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">Delete Book</ModalHeader>
               <ModalBody>
-                Are you sure to delete book [{book.name}]?
+                Are you sure to delete book [{book?.name}]?
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="light" onPress={onClose}>
@@ -59,6 +66,6 @@ function DeleteBook({ book, onBookDeleted, renderTrigger }: DeleteBookProps) {
       </Modal>
     </>
   );
-}
+})
 
 export default DeleteBook;
