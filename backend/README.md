@@ -5,6 +5,7 @@
 psql postgres
 ```
 ```
-CREATE USER sharebook PASSWORD '****';
-CREATE DATABASE sharebook; 
+CREATE USER shareacctbook PASSWORD '****';
+CREATE DATABASE share_acct_book; 
+GRANT ALL PRIVILEGES ON DATABASE share_acct_book TO shareacctbook;
 ```

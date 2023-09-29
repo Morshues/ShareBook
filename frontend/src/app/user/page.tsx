@@ -5,24 +5,24 @@ import { useRouter } from "next/navigation";
 import { Button } from "@nextui-org/react";
 
 import { clearToken } from "@/api/ApiClient";
-import { Book } from "@/types/book";
+import { AccountBook } from "@/types/accountBook";
 import { useCurrentUser } from "@/hooks/auth/useCurrentUser";
-import { useBookList } from "@/hooks/useBookList";
+import { useAccountBookList } from "@/hooks/useAccountBookList";
 
 import UserProfile from "@/components/UserProfile";
-import BookList from "@/components/BookList";
-import CreateBook from "@/components/modals/CreateBook";
-import EditBook from "@/components/modals/EditBook";
-import DeleteBook from "@/components/modals/DeleteBook";
+import AccountBookList from "@/components/AccountBookList";
+import CreateAccountBook from "@/components/modals/CreateAccountBook";
+import EditAccountBook from "@/components/modals/EditAccountBook";
+import DeleteAccountBook from "@/components/modals/DeleteAccountBook";
 
 export default function User() {
   const router = useRouter();
 
-  const editBookRef = useRef<React.ElementRef<typeof EditBook>>(null);
-  const deleteBookRef = useRef<React.ElementRef<typeof DeleteBook>>(null);
+  const editAccountBookRef = useRef<React.ElementRef<typeof EditAccountBook>>(null);
+  const deleteAccountBookRef = useRef<React.ElementRef<typeof DeleteAccountBook>>(null);
 
   const { user: currentUser, loaded, fetchUser, isAuthenticated } = useCurrentUser();
-  const { bookList, insertBook, updateBook, deleteBook } = useBookList();
+  const { bookList, insertAccountBook, updateAccountBook, deleteAccountBook } = useAccountBookList();
 
   useEffect(() => {
     if (loaded && !isAuthenticated) {
@@ -39,23 +39,23 @@ export default function User() {
     router.push('/login');
   };
 
-  const onEditBook = (book: Book) => {
-    editBookRef.current?.open(book);
+  const onEditAccountBook = (accountBook: AccountBook) => {
+    editAccountBookRef.current?.open(accountBook);
   };
 
-  const onDeleteBook = (book: Book) => {
-    deleteBookRef.current?.open(book);
+  const onDeleteAccountBook = (accountBook: AccountBook) => {
+    deleteAccountBookRef.current?.open(accountBook);
   };
 
   return (
     <div>
       <Button onClick={signOut}>Sign out</Button>
       <Button onClick={fetchUser}>Refresh</Button>
-      <CreateBook onBookCreated={insertBook} />
+      <CreateAccountBook onCreated={insertAccountBook} />
       <UserProfile user={currentUser} />
-      <BookList bookList={bookList} onEditBook={onEditBook} onDeleteBook={onDeleteBook} />
-      <EditBook ref={editBookRef} onBookEdited={updateBook} />
-      <DeleteBook ref={deleteBookRef} onBookDeleted={deleteBook} />
+      <AccountBookList accountBookList={bookList} onEdit={onEditAccountBook} onDelete={onDeleteAccountBook} />
+      <EditAccountBook ref={editAccountBookRef} onEdited={updateAccountBook} />
+      <DeleteAccountBook ref={deleteAccountBookRef} onDeleted={deleteAccountBook} />
     </div>
   )
 }

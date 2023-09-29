@@ -1,7 +1,7 @@
 import { API_BASE_URL, ACCESS_TOKEN } from '@/constants';
 import Cookies from "js-cookie";
 import { ApiResponse } from "@/api/types/ApiResponse";
-import { Book } from "@/types/book";
+import { AccountBook } from "@/types/accountBook";
 
 function getToken(): string {
   return Cookies.get(ACCESS_TOKEN) || "";
@@ -57,39 +57,39 @@ export function getCurrentUser() {
   });
 }
 
-export function getBookList(): Promise<ApiResponse<Book[]>> {
+export function getAccountBookList(): Promise<ApiResponse<AccountBook[]>> {
   return request({
-    url: `${API_BASE_URL}/books/`,
+    url: `${API_BASE_URL}/acctBooks/`,
     method: 'GET',
   });
 }
 
-export function createBook({name, description}: {name: string, description: string}): Promise<ApiResponse<Book>> {
+export function createAccountBook({name, description}: {name: string, description: string}): Promise<ApiResponse<AccountBook>> {
   return request({
-    url: `${API_BASE_URL}/books/create`,
+    url: `${API_BASE_URL}/acctBooks/create`,
     method: 'PUT',
     body: JSON.stringify({name: name, description: description}),
   });
 }
 
-export function getBook(id: number): Promise<ApiResponse<Book>> {
+export function getAccountBook(id: number): Promise<ApiResponse<AccountBook>> {
   return request({
-    url: `${API_BASE_URL}/books/${id}`,
+    url: `${API_BASE_URL}/acctBooks/${id}`,
     method: 'GET',
   });
 }
 
-export function updateBook({id, name, description}: {id: number, name: string, description: string}): Promise<ApiResponse<Book>> {
+export function updateAccountBook({id, name, description}: {id: number, name: string, description: string}): Promise<ApiResponse<AccountBook>> {
   return request({
-    url: `${API_BASE_URL}/books/update`,
+    url: `${API_BASE_URL}/acctBooks/update`,
     method: 'PATCH',
     body: JSON.stringify({id: id, name: name, description: description}),
   });
 }
 
-export function deleteBook(id: number): Promise<ApiResponse<void>> {
+export function deleteAccountBook(id: number): Promise<ApiResponse<void>> {
   return request({
-    url: `${API_BASE_URL}/books/delete/${id}`,
+    url: `${API_BASE_URL}/acctBooks/delete/${id}`,
     method: 'DELETE',
   });
 }

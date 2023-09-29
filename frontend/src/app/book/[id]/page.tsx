@@ -1,16 +1,16 @@
 'use client'
 
-import { useBook } from "@/hooks/useBook";
+import { useAccountBook } from "@/hooks/useAccountBook";
 
-export default function Book() {
-  const { book } = useBook();
+export default function AccountBook() {
+  const { accountBook } = useAccountBook();
 
   return (
     <div>
-      {book ? (
+      {accountBook ? (
         <div>
-          <h1>{book.name}</h1>
-          <p>{book.description}</p>
+          <h1>{accountBook.name}</h1>
+          <p>{accountBook.description}</p>
         </div>
       ) : (
         <p>Loading...</p>

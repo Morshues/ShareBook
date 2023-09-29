@@ -8,11 +8,11 @@ server:
 
 spring:
   application:
-    name: ShareBook
+    name: ShareAccountBook
   datasource:
-    url: ${DB_URL:jdbc:postgresql://localhost:5432/sharebook}
-    username: ${DB_USERNAME:sharebook}
-    password: ${DB_PASSWORD:sharebookdev123}
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/share_acct_book}
+    username: ${DB_USERNAME:shareacctbook}
+    password: ${DB_PASSWORD:shareabdev123}
     driver-class-name: org.postgresql.Driver
   security:
     oauth2:
