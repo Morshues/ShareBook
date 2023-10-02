@@ -1,7 +1,9 @@
 import { API_BASE_URL, ACCESS_TOKEN } from '@/constants';
 import Cookies from "js-cookie";
 import { ApiResponse } from "@/api/types/ApiResponse";
+import { CreateAccountBookItem } from "@/api/types/BookItem";
 import { AccountBook } from "@/types/accountBook";
+import { AccountBookItem } from "@/types/AccountBookItem";
 
 function getToken(): string {
   return Cookies.get(ACCESS_TOKEN) || "";
@@ -91,5 +93,13 @@ export function deleteAccountBook(id: number): Promise<ApiResponse<void>> {
   return request({
     url: `${API_BASE_URL}/acctBooks/delete/${id}`,
     method: 'DELETE',
+  });
+}
+
+export function createAccountBookItem(item: CreateAccountBookItem): Promise<ApiResponse<AccountBookItem>> {
+  return request({
+    url: `${API_BASE_URL}/acctBookItems/create`,
+    method: 'PUT',
+    body: JSON.stringify(item),
   });
 }
