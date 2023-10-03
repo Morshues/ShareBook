@@ -3,17 +3,13 @@ package com.morshues.shareacctbook.controller
 import com.morshues.shareacctbook.dto.ApiResponse
 import com.morshues.shareacctbook.dto.CreateAccountBookItemDTO
 import com.morshues.shareacctbook.dto.ShowAccountBookItemDTO
-import com.morshues.shareacctbook.dto.converter.AccountBookConverter
 import com.morshues.shareacctbook.security.CurrentUser
 import com.morshues.shareacctbook.security.UserPrincipal
 import com.morshues.shareacctbook.service.AccountBookItemService
 import com.morshues.shareacctbook.service.CustomUserService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/acctBookItems")
@@ -36,4 +32,17 @@ class ItemController(
         return ResponseEntity(response, HttpStatus.CREATED)
     }
 
+    @DeleteMapping("/delete/{accountBookItemId}")
+    fun deleteAccountBookItem(
+        @CurrentUser userPrincipal: UserPrincipal,
+        @PathVariable(value = "accountBookItemId") accountBookItemId: Long,
+    ): ResponseEntity<ApiResponse<Nothing>> {
+        val user = userService.getUserFromPrincipal(userPrincipal)
+        accountBookItemService.deleteAccountBookItem(user, accountBookItemId)
+        val response = ApiResponse(
+            status = "success",
+            data = null,
+        )
+        return ResponseEntity(response, HttpStatus.OK)
+    }
 }

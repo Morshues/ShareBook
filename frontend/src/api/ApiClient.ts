@@ -103,3 +103,10 @@ export function createAccountBookItem(item: CreateAccountBookItem): Promise<ApiR
     body: JSON.stringify(item),
   });
 }
+
+export function deleteAccountBookItem(id: number): Promise<ApiResponse<void>> {
+  return request({
+    url: `${API_BASE_URL}/acctBookItems/delete/${id}`,
+    method: 'DELETE',
+  });
+}
