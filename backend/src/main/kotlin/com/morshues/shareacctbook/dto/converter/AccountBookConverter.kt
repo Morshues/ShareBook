@@ -5,4 +5,5 @@ import com.morshues.shareacctbook.model.AccountBook
 
 interface AccountBookConverter {
     fun toShowDTO(accountBook: AccountBook): ShowAccountBookDTO
+    fun toShowWithItemsDTO(accountBook: AccountBook): ShowAccountBookDTO
 }

@@ -1,6 +1,8 @@
 'use client'
 
+import React from "react";
 import { useAccountBook } from "@/hooks/useAccountBook";
+import AccountBookItemList from "@/components/AccountBookItemList";
 import CreateAccountBookItem from "@/components/modals/CreateAccountBookItem";
 
 export default function AccountBook() {
@@ -13,6 +15,7 @@ export default function AccountBook() {
           <CreateAccountBookItem accountBookId={accountBook.id} />
           <h1>{accountBook.name}</h1>
           <p>{accountBook.description}</p>
+          <AccountBookItemList accountBookItemList={accountBook.items || []} onEdit={() => {}} onDelete={() => {}} />
         </div>
       ) : (
         <p>Loading...</p>

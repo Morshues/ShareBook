@@ -26,7 +26,7 @@ class AccountBookService(
 
         checkPermission(user, accountBook, ViewableRole)
 
-        return accountBookConverter.toShowDTO(accountBook)
+        return accountBookConverter.toShowWithItemsDTO(accountBook)
     }
 
     @Transactional

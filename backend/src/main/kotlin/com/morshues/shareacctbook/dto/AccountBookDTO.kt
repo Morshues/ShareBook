@@ -16,4 +16,5 @@ data class ShowAccountBookDTO(
     val name: String,
     val description: String,
     val createdAt: Long,
+    val items: List<ShowAccountBookItemDTO>? = null
 )

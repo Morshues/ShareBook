@@ -23,4 +23,8 @@ data class AccountBook(
 ) {
     @ManyToMany(mappedBy = "accountBooks")
     val users: Set<User> = HashSet()
+
+    @OneToMany(mappedBy = "accountBook", cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.LAZY)
+    val items: List<AccountBookItem> = listOf()
+
 }
