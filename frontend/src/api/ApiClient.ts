@@ -1,7 +1,7 @@
 import { API_BASE_URL, ACCESS_TOKEN } from '@/constants';
 import Cookies from "js-cookie";
 import { ApiResponse } from "@/api/types/ApiResponse";
-import { CreateAccountBookItem } from "@/api/types/BookItem";
+import { CreateAccountBookItem, UpdateAccountBookItem } from "@/api/types/AccountBookItem";
 import { AccountBook } from "@/types/accountBook";
 import { AccountBookItem } from "@/types/AccountBookItem";
 
@@ -100,6 +100,14 @@ export function createAccountBookItem(item: CreateAccountBookItem): Promise<ApiR
   return request({
     url: `${API_BASE_URL}/acctBookItems/create`,
     method: 'PUT',
+    body: JSON.stringify(item),
+  });
+}
+
+export function updateAccountBookItem(item: UpdateAccountBookItem): Promise<ApiResponse<AccountBookItem>> {
+  return request({
+    url: `${API_BASE_URL}/acctBookItems/update`,
+    method: 'PATCH',
     body: JSON.stringify(item),
   });
 }

@@ -1,6 +1,7 @@
 package com.morshues.shareacctbook.service
 
 import com.morshues.shareacctbook.dto.CreateAccountBookItemDTO
+import com.morshues.shareacctbook.dto.EditAccountBookItemDTO
 import com.morshues.shareacctbook.dto.ShowAccountBookItemDTO
 import com.morshues.shareacctbook.dto.converter.AccountBookItemConverter
 import com.morshues.shareacctbook.handler.NoPermissionException
@@ -38,9 +39,25 @@ class AccountBookItemService(
     }
 
     @Transactional
+    fun updateAccountBookItem(user: User, accountBookItemDTO: EditAccountBookItemDTO): ShowAccountBookItemDTO {
+        val item = accountBookItemRepository.findById(accountBookItemDTO.id)
+            .orElseThrow { NotFoundException("Account book item not found") }
+
+        checkPermission(user, item, EditableRole)
+
+        item.name = accountBookItemDTO.name
+        item.description = accountBookItemDTO.description
+        item.value = accountBookItemDTO.value
+        item.purchasedPlace = accountBookItemDTO.purchasedPlace
+        item.purchasedAt = TimeUtils.timestampToZonedDateTime(accountBookItemDTO.purchasedAt?: System.currentTimeMillis())
+        val savedItem = accountBookItemRepository.save(item)
+        return accountBookItemConverter.toShowDTO(savedItem)
+    }
+
+    @Transactional
     fun deleteAccountBookItem(user: User, id: Long) {
         val item = accountBookItemRepository.findById(id)
-            .orElseThrow { NotFoundException("Account book not found") }
+            .orElseThrow { NotFoundException("Account book item not found") }
 
         checkPermission(user, item, EditableRole)
 

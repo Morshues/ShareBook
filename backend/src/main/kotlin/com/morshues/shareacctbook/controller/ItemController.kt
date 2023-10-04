@@ -1,8 +1,6 @@
 package com.morshues.shareacctbook.controller
 
-import com.morshues.shareacctbook.dto.ApiResponse
-import com.morshues.shareacctbook.dto.CreateAccountBookItemDTO
-import com.morshues.shareacctbook.dto.ShowAccountBookItemDTO
+import com.morshues.shareacctbook.dto.*
 import com.morshues.shareacctbook.security.CurrentUser
 import com.morshues.shareacctbook.security.UserPrincipal
 import com.morshues.shareacctbook.service.AccountBookItemService
@@ -24,12 +22,26 @@ class ItemController(
         @RequestBody createAccountBookItemDTO: CreateAccountBookItemDTO,
     ): ResponseEntity<ApiResponse<ShowAccountBookItemDTO>> {
         val user = userService.getUserFromPrincipal(userPrincipal)
-        val savedAccountBookDto = accountBookItemService.createAccountBookItem(user, createAccountBookItemDTO)
+        val savedItemDto = accountBookItemService.createAccountBookItem(user, createAccountBookItemDTO)
         val response = ApiResponse(
             status = "success",
-            data = savedAccountBookDto,
+            data = savedItemDto,
         )
         return ResponseEntity(response, HttpStatus.CREATED)
+    }
+
+    @PatchMapping("/update")
+    fun updateAccountBook(
+        @CurrentUser userPrincipal: UserPrincipal,
+        @RequestBody accountBookItemDTO: EditAccountBookItemDTO,
+    ): ResponseEntity<ApiResponse<ShowAccountBookItemDTO>> {
+        val user = userService.getUserFromPrincipal(userPrincipal)
+        val savedItemDto = accountBookItemService.updateAccountBookItem(user, accountBookItemDTO)
+        val response = ApiResponse(
+            status = "success",
+            data = savedItemDto,
+        )
+        return ResponseEntity.ok(response)
     }
 
     @DeleteMapping("/delete/{accountBookItemId}")

@@ -46,7 +46,7 @@ function AccountBookItemList({ accountBookItemList, onEdit, onDelete }: AccountB
       case "purchased_place":
         return accountBookItem.purchasedPlace;
       case "purchased_at":
-        let purchasedDate = new Date(accountBookItem.createdAt);
+        let purchasedDate = new Date(accountBookItem.purchasedAt);
         return purchasedDate.toLocaleDateString();
       case "created_at":
         let createdDate = new Date(accountBookItem.createdAt);

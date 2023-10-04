@@ -16,19 +16,19 @@ data class AccountBookItem(
     @JoinColumn(name = "account_book_id")
     val accountBook: AccountBook,
 
-    val name: String,
+    var name: String,
 
-    val description: String,
+    var description: String,
 
-    val value: BigDecimal,
+    var value: BigDecimal,
 
     @Column(name = "created_at")
     val createdAt: ZonedDateTime = ZonedDateTime.now(),
 
     @Column(name = "purchased_at")
-    val purchasedAt: ZonedDateTime = ZonedDateTime.now(),
+    var purchasedAt: ZonedDateTime = ZonedDateTime.now(),
 
     @Column(name = "purchased_place")
-    val purchasedPlace: String?,
+    var purchasedPlace: String?,
 
 )

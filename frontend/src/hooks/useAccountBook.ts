@@ -55,6 +55,16 @@ export const useAccountBook = () => {
     });
   }
 
+  const updateItem = (targetItem: AccountBookItem) => {
+    setAccountBook(prevAccountBook => {
+      if (prevAccountBook == null) return null;
+      return {
+        ...prevAccountBook,
+        items: prevAccountBook.items?.map(item => item.id === targetItem.id ? targetItem : item)
+      }
+    });
+  }
+
   const deleteItem = (id: number) => {
     setAccountBook(prevAccountBook => {
       if (prevAccountBook == null) return null;
@@ -66,5 +76,5 @@ export const useAccountBook = () => {
   }
 
 
-  return { accountBook, fetchBook, loading, insertItem, deleteItem };
+  return { accountBook, fetchBook, loading, insertItem, updateItem, deleteItem };
 }

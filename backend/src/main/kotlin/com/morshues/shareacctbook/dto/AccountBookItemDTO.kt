@@ -11,6 +11,15 @@ data class CreateAccountBookItemDTO(
     val purchasedPlace: String?,
 )
 
+data class EditAccountBookItemDTO(
+    val id: Long,
+    val name: String,
+    val description: String,
+    val value: BigDecimal,
+    val purchasedAt: Long?,
+    val purchasedPlace: String?,
+)
+
 data class ShowAccountBookItemDTO(
     val id: Long,
     val accountBookId: Long,
