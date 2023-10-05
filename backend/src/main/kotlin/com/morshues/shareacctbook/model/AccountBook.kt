@@ -21,8 +21,8 @@ data class AccountBook(
     val createdAt: ZonedDateTime = ZonedDateTime.now(),
 
 ) {
-    @ManyToMany(mappedBy = "accountBooks")
-    val users: Set<User> = HashSet()
+    @OneToMany(mappedBy = "accountBook", cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.LAZY)
+    val sharers: List<AccountBookSharer> = listOf()
 
     @OneToMany(mappedBy = "accountBook", cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.LAZY)
     val items: List<AccountBookItem> = listOf()

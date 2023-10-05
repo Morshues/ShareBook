@@ -13,11 +13,11 @@ data class ItemFlow(
     val id: Long? = null,
 
     @ManyToOne
-    @JoinColumn(name = "item_id")
+    @JoinColumn(name = "item_id", nullable = false)
     val item: AccountBookItem,
 
     @ManyToOne
-    @JoinColumns(JoinColumn(name = "user_id"), JoinColumn(name = "account_book_id"))
+    @JoinColumn(name = "sharer_id")
     val sharer: AccountBookSharer,
 
     @Column(name = "created_at")

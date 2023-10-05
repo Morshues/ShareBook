@@ -22,11 +22,11 @@ class AccountAccountBookServiceTest {
     fun `test findAccountBook returns expected DTO when account book exists and user has permission`() {
         val mockUser = User(id = 1L, providerId = "123", email = "test@test.com", username = "test")
         val mockAccountBook = AccountBook(id = 2L, name = "Test Book", description = "Description")
-        val mockShowAccountBookDTO = accountBookConverter.toShowDTO(mockAccountBook)
+        val mockShowAccountBookDTO = accountBookConverter.toShowWithItemsDTO(mockAccountBook)
 
         whenever(accountBookRepository.findById(any())).thenReturn(Optional.of(mockAccountBook))
         whenever(accountBookSharerRepository.findByUserAndAccountBook(mockUser, mockAccountBook)).thenReturn(
-            AccountBookSharer(id = AccountBookSharerId(mockUser.id!!, mockAccountBook.id!!), user = mockUser, accountBook = mockAccountBook, role = SharerRole.OWNER)
+            AccountBookSharer(user = mockUser, accountBook = mockAccountBook, role = SharerRole.OWNER)
         )
 
         val result = accountBookService.findAccountBook(mockUser, 2L)

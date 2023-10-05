@@ -36,9 +36,7 @@ class AccountBookService(
             description = accountBookDTO.description,
         )
         val savedAccountBook = accountBookRepository.save(accountBook)
-        val accountBookSharerId = AccountBookSharerId(user.id!!, savedAccountBook.id!!)
         val accountBookSharer = AccountBookSharer(
-            id = accountBookSharerId,
             user = user,
             accountBook = savedAccountBook,
             role = SharerRole.OWNER,

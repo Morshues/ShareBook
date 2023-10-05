@@ -34,11 +34,11 @@ data class User(
     @Column(name = "created_at")
     private val createdAt: ZonedDateTime = ZonedDateTime.now(),
 ) {
-    @ManyToMany
-    @JoinTable(
-        name = "account_book_sharers",
-        joinColumns = [JoinColumn(name = "user_id")],
-        inverseJoinColumns = [JoinColumn(name = "account_book_id")]
-    )
-    val accountBooks: Set<AccountBook> = HashSet()
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    val accountBookSharers: Set<AccountBookSharer> = HashSet()
+
+    val accountBooks: Set<AccountBook>
+        get() = accountBookSharers.map { it.accountBook }.toSet()
+
 }

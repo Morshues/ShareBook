@@ -4,6 +4,7 @@ import { ApiResponse } from "@/api/types/ApiResponse";
 import { CreateAccountBookItem, UpdateAccountBookItem } from "@/api/types/AccountBookItem";
 import { AccountBook } from "@/types/accountBook";
 import { AccountBookItem } from "@/types/AccountBookItem";
+import { AccountBookSharer } from "@/types/AccountBookSharer";
 
 function getToken(): string {
   return Cookies.get(ACCESS_TOKEN) || "";
@@ -93,6 +94,13 @@ export function deleteAccountBook(id: number): Promise<ApiResponse<void>> {
   return request({
     url: `${API_BASE_URL}/acctBooks/delete/${id}`,
     method: 'DELETE',
+  });
+}
+
+export function getAccountBookSharers(accountBookId: number): Promise<ApiResponse<AccountBookSharer[]>> {
+  return request({
+    url: `${API_BASE_URL}/sharer/${accountBookId}`,
+    method: 'GET',
   });
 }
 

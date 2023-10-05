@@ -1,36 +1,24 @@
 import { useEffect, useState } from "react";
-import { useParams } from 'next/navigation';
 
 import { getAccountBook } from "@/api/ApiClient";
 import { AccountBook } from "@/types/accountBook";
 import { AccountBookItem } from "@/types/AccountBookItem";
 
-export const useAccountBook = () => {
-  const routeParams = useParams();
-  const [id, setId] = useState<number | null>(null);
+export const useAccountBook = (accountBookId: number) => {
   const [accountBook, setAccountBook] = useState<AccountBook | null>(null);
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    setId(Number(routeParams?.id));
-  }, [routeParams]);
 
   useEffect(() => {
     if (loading) {
       return;
     }
-    setLoading(true);
     fetchBook().then(/* Do Nothing */);
-  }, [id]);
+  }, []);
 
   const fetchBook = async () => {
-    if (!id) {
-      setLoading(false);
-      return;
-    }
-
+    setLoading(true);
     try {
-      const bookResponse = await getAccountBook(id);
+      const bookResponse = await getAccountBook(accountBookId);
       if (bookResponse == null || bookResponse.status != 'success') {
         return;
       }

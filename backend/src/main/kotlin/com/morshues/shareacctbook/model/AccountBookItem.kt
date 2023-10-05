@@ -13,7 +13,7 @@ data class AccountBookItem(
     val id: Long? = null,
 
     @ManyToOne
-    @JoinColumn(name = "account_book_id")
+    @JoinColumn(name = "account_book_id", nullable = false)
     val accountBook: AccountBook,
 
     var name: String,
