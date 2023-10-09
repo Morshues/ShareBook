@@ -13,6 +13,9 @@ class AccountBookSharerConverterImpl : AccountBookSharerConverter {
             id = sharer.id!!,
             accountBookId = sharer.accountBook.id!!,
             userId = sharer.user?.id,
+            userName = sharer.user?.username,
+            userEmail = sharer.user?.email,
+            userImg = sharer.user?.profilePictureUrl,
             role = sharer.role.name,
             createdAt = sharer.createdAt.toInstant().toEpochMilli(),
         )

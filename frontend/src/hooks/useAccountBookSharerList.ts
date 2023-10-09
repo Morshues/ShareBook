@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 
-import { getAccountBookSharers } from "@/api/ApiClient";
+import { getAccountBookSharers, updateRole } from "@/api/ApiClient";
 import { AccountBookSharer } from "@/types/AccountBookSharer";
 
 export const useAccountBookSharerList = (accountBookId: number) => {
@@ -28,13 +28,17 @@ export const useAccountBookSharerList = (accountBookId: number) => {
     setAccountBookSharerList(prevList => [...prevList, sharer]);
   }
 
-  const updateSharer = (updatedSharer: AccountBookSharer) => {
-    setAccountBookSharerList(prevList => prevList.map(sharer => sharer.id === updatedSharer.id ? updatedSharer : sharer))
+  const updateSharer = (id: number, newRole: string) => {
+    updateRole(id, newRole).then(result => {
+      const updatedRole = result.data;
+      setAccountBookSharerList(prevList => prevList.map(sharer => {
+        if (sharer.id === id) {
+          sharer.role = updatedRole;
+        }
+        return sharer;
+      }))
+    })
   }
 
-  const deleteSharer = (id: number) => {
-    setAccountBookSharerList(prevList => prevList.filter(sharer => sharer.id !== id));
-  }
-
-  return { sharerList: accountBookSharerList, fetchSharerList: fetchAccountBookSharerList, insertSharer, updateSharer, deleteSharer };
+  return { sharerList: accountBookSharerList, fetchSharerList: fetchAccountBookSharerList, insertSharer, updateSharer };
 }

@@ -1,5 +1,6 @@
 package com.morshues.shareacctbook.controller
 
+import com.morshues.shareacctbook.dto.AccountBookSharerUpdateRoleDTO
 import com.morshues.shareacctbook.dto.AccountBookSharerDTO
 import com.morshues.shareacctbook.dto.ApiResponse
 import com.morshues.shareacctbook.security.CurrentUser
@@ -8,10 +9,7 @@ import com.morshues.shareacctbook.service.AccountBookSharerService
 import com.morshues.shareacctbook.service.CustomUserService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/sharer")
@@ -34,5 +32,18 @@ class AccountBookSharerController(
         return ResponseEntity(response, HttpStatus.CREATED)
     }
 
+    @PutMapping("/updateRole")
+    fun updateRole(
+        @CurrentUser userPrincipal: UserPrincipal,
+        @RequestBody updateRoleDTO: AccountBookSharerUpdateRoleDTO,
+    ): ResponseEntity<ApiResponse<String>> {
+        val user = userService.getUserFromPrincipal(userPrincipal)
+        val result = accountBookSharerService.updateRole(user, updateRoleDTO)
+        val response = ApiResponse(
+            status = "success",
+            data = result,
+        )
+        return ResponseEntity(response, HttpStatus.CREATED)
+    }
 
 }

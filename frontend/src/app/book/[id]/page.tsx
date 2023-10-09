@@ -5,8 +5,8 @@ import { useParams } from "next/navigation";
 
 import { AccountBookItem } from "@/types/AccountBookItem";
 import { useAccountBook } from "@/hooks/useAccountBook";
-import { useAccountBookSharerList } from "@/hooks/useAccountBookSharerList";
 
+import AccountBookSharersBar from "@/components/AccountBookSharersBar";
 import AccountBookItemList from "@/components/AccountBookItemList";
 import CreateAccountBookItem from "@/components/modals/CreateAccountBookItem";
 import EditAccountBookItem from "@/components/modals/EditAccountBookItem";
@@ -20,7 +20,6 @@ export default function AccountBook() {
   const deleteAccountBookItemRef = useRef<React.ElementRef<typeof DeleteAccountBookItem>>(null);
 
   const { accountBook, insertItem, updateItem, deleteItem } = useAccountBook(id);
-  const { sharerList } = useAccountBookSharerList(id);
 
   const onEditAccountBookItem = (item: AccountBookItem) => {
     editAccountBookItemRef.current?.open(item);
@@ -37,7 +36,7 @@ export default function AccountBook() {
           <CreateAccountBookItem accountBookId={accountBook.id} onCreated={insertItem} />
           <h1>{accountBook.name}</h1>
           <p>{accountBook.description}</p>
-          <p>{JSON.stringify(sharerList)}</p>
+          <AccountBookSharersBar accountBookId={id} />
           <AccountBookItemList accountBookItemList={accountBook.items || []} onEdit={onEditAccountBookItem} onDelete={onDeleteAccountBookItem} />
           <EditAccountBookItem ref={editAccountBookItemRef} onEdited={updateItem} />
           <DeleteAccountBookItem ref={deleteAccountBookItemRef} onDeleted={deleteItem} />

@@ -29,7 +29,7 @@ data class AccountBookSharer(
     val accountBook: AccountBook,
 
     @Enumerated(EnumType.STRING)
-    val role: SharerRole = SharerRole.VIEWER,
+    var role: SharerRole = SharerRole.VIEWER,
 
     @Column(name = "created_at")
     val createdAt: ZonedDateTime = ZonedDateTime.now(),
