@@ -1,7 +1,6 @@
 package com.morshues.shareacctbook.service
 
-import com.morshues.shareacctbook.dto.AccountBookSharerUpdateRoleDTO
-import com.morshues.shareacctbook.dto.AccountBookSharerDTO
+import com.morshues.shareacctbook.dto.*
 import com.morshues.shareacctbook.dto.converter.AccountBookSharerConverter
 import com.morshues.shareacctbook.handler.NoPermissionException
 import com.morshues.shareacctbook.handler.NotFoundException
@@ -28,6 +27,22 @@ class AccountBookSharerService(
         val sharers = accountBook.sharers
 
         return sharers.map { accountBookSharerConverter.toShowDTO(it) }
+    }
+
+    @Transactional
+    fun createAccountBookSharer(user: User, createSharerDTO: AccountBookSharerCreateDTO): AccountBookSharerDTO {
+        val accountBook = accountBookRepository.findById(createSharerDTO.accountBookId)
+            .orElseThrow { NotFoundException("Account book not found") }
+
+        checkPermission(user, accountBook, listOf(SharerRole.OWNER))
+
+        val accountBookSharer = AccountBookSharer(
+            accountBook = accountBook,
+            displayName = createSharerDTO.displayName,
+            role = SharerRole.valueOf(createSharerDTO.role),
+        )
+        val savedSharer = accountBookSharerRepository.save(accountBookSharer)
+        return accountBookSharerConverter.toShowDTO(savedSharer)
     }
 
     fun updateRole(user: User, updateRoleDTO: AccountBookSharerUpdateRoleDTO): String {

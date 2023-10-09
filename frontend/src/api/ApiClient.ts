@@ -104,6 +104,14 @@ export function getAccountBookSharers(accountBookId: number): Promise<ApiRespons
   });
 }
 
+export function createAccountBookSharer(accountBookId: number, displayName: string, role: string): Promise<ApiResponse<AccountBookSharer>> {
+  return request({
+    url: `${API_BASE_URL}/sharer/create`,
+    method: 'PUT',
+    body: JSON.stringify({accountBookId, displayName, role}),
+  });
+}
+
 export function updateRole(id: number, newRole: string): Promise<ApiResponse<string>> {
   return request({
     url: `${API_BASE_URL}/sharer/updateRole`,

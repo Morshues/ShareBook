@@ -1,5 +1,6 @@
 export type AccountBookSharer = {
   id: number;
+  displayName?: string;
   userId?: number;
   userEmail?: string;
   userName?: string;

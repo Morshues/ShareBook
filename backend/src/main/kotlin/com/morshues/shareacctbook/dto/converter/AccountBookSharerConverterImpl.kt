@@ -12,6 +12,7 @@ class AccountBookSharerConverterImpl : AccountBookSharerConverter {
         return AccountBookSharerDTO(
             id = sharer.id!!,
             accountBookId = sharer.accountBook.id!!,
+            displayName = sharer.displayName,
             userId = sharer.user?.id,
             userName = sharer.user?.username,
             userEmail = sharer.user?.email,

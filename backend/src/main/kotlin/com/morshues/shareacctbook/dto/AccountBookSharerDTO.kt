@@ -2,6 +2,7 @@ package com.morshues.shareacctbook.dto
 
 data class AccountBookSharerDTO(
     val id: Long,
+    val displayName: String?,
     val userId: Long?,
     val userEmail: String?,
     val userName: String?,
@@ -9,6 +10,12 @@ data class AccountBookSharerDTO(
     val accountBookId: Long,
     val role: String,
     val createdAt: Long,
+)
+
+data class AccountBookSharerCreateDTO(
+    val accountBookId: Long,
+    val displayName: String?,
+    val role: String,
 )
 
 data class AccountBookSharerUpdateRoleDTO(

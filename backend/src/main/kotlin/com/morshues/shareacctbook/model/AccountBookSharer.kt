@@ -24,6 +24,9 @@ data class AccountBookSharer(
     @JoinColumn(name = "user_id")
     val user: User? = null,
 
+    @JoinColumn(name = "display_name")
+    val displayName: String? = null,
+
     @ManyToOne
     @JoinColumn(name = "account_book_id", nullable = false)
     val accountBook: AccountBook,

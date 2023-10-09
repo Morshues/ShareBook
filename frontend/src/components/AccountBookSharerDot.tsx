@@ -44,7 +44,7 @@ function AccountBookSharerDot({ sharer, onRoleChangeRequest }: AccountBookSharer
         onSelectionChange={handleRoleChange}
       >
         <DropdownItem key="profile" textValue={"Profile"} className="h-14 gap-2">
-          <p className="font-semibold">{sharer.userName}</p>
+          <p className="font-semibold">{sharer.displayName || sharer.userName}</p>
           <p className="font-semibold">{sharer.userEmail}</p>
         </DropdownItem>
         {sharer.role === 'OWNER' ? (

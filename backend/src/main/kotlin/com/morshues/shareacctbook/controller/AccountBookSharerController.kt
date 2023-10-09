@@ -1,8 +1,6 @@
 package com.morshues.shareacctbook.controller
 
-import com.morshues.shareacctbook.dto.AccountBookSharerUpdateRoleDTO
-import com.morshues.shareacctbook.dto.AccountBookSharerDTO
-import com.morshues.shareacctbook.dto.ApiResponse
+import com.morshues.shareacctbook.dto.*
 import com.morshues.shareacctbook.security.CurrentUser
 import com.morshues.shareacctbook.security.UserPrincipal
 import com.morshues.shareacctbook.service.AccountBookSharerService
@@ -28,6 +26,20 @@ class AccountBookSharerController(
         val response = ApiResponse(
             status = "success",
             data = responseDto,
+        )
+        return ResponseEntity(response, HttpStatus.CREATED)
+    }
+
+    @PutMapping("/create")
+    fun addSharer(
+        @CurrentUser userPrincipal: UserPrincipal,
+        @RequestBody createSharerDTO: AccountBookSharerCreateDTO,
+    ): ResponseEntity<ApiResponse<AccountBookSharerDTO>> {
+        val user = userService.getUserFromPrincipal(userPrincipal)
+        val savedSharerDto = accountBookSharerService.createAccountBookSharer(user, createSharerDTO)
+        val response = ApiResponse(
+            status = "success",
+            data = savedSharerDto,
         )
         return ResponseEntity(response, HttpStatus.CREATED)
     }
