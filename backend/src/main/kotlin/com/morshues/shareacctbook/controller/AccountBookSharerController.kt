@@ -20,7 +20,7 @@ class AccountBookSharerController(
     fun getSharers(
         @CurrentUser userPrincipal: UserPrincipal,
         @PathVariable(value = "accountBookId") accountBookId: Long,
-    ): ResponseEntity<ApiResponse<List<AccountBookSharerDTO>>> {
+    ): ResponseEntity<ApiResponse<AccountBookSharerListDTO>> {
         val user = userService.getUserFromPrincipal(userPrincipal)
         val responseDto = accountBookSharerService.findAccountBookSharers(user, accountBookId)
         val response = ApiResponse(

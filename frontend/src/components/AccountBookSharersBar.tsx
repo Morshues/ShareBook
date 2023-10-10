@@ -14,7 +14,7 @@ type AccountBookSharersBarProps = {
 function AccountBookSharersBar({ accountBookId }: AccountBookSharersBarProps) {
   const createSharerModalRef = useRef<React.ElementRef<typeof CreateSharerModal>>(null);
 
-  const { sharerList, insertSharer, updateSharer } = useAccountBookSharerList(accountBookId);
+  const { currentUserRole, sharerList, insertSharer, updateSharer } = useAccountBookSharerList(accountBookId);
 
   const handleCreateRequest = (name: string, role: string) => {
     insertSharer(accountBookId, name, role);
@@ -23,7 +23,7 @@ function AccountBookSharersBar({ accountBookId }: AccountBookSharersBarProps) {
   return (
     <div className="flex">
       {sharerList.map(sharer =>
-        <AccountBookSharerDot key={sharer.id} sharer={sharer} onRoleChangeRequest={updateSharer} />
+        <AccountBookSharerDot currentUserRole={currentUserRole} key={sharer.id} sharer={sharer} onRoleChangeRequest={updateSharer} />
       )}
       <Avatar
         isBordered

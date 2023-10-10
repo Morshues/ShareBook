@@ -4,6 +4,7 @@ import { createAccountBookSharer, getAccountBookSharers, updateRole } from "@/ap
 import { AccountBookSharer } from "@/types/AccountBookSharer";
 
 export const useAccountBookSharerList = (accountBookId: number) => {
+  const [currentUserRole, setCurrentUserRole] = useState('VIEWER');
   const [accountBookSharerList, setAccountBookSharerList] = useState<AccountBookSharer[]>([]);
 
   const fetchAccountBookSharerList = useCallback(async () => {
@@ -13,7 +14,8 @@ export const useAccountBookSharerList = (accountBookId: number) => {
         return;
       }
 
-      setAccountBookSharerList(response.data);
+      setCurrentUserRole(response.data.currentUserRole);
+      setAccountBookSharerList(response.data.list);
     }
     catch (error) {
       setAccountBookSharerList([]);
@@ -43,5 +45,5 @@ export const useAccountBookSharerList = (accountBookId: number) => {
     })
   }
 
-  return { sharerList: accountBookSharerList, fetchSharerList: fetchAccountBookSharerList, insertSharer, updateSharer };
+  return { currentUserRole, sharerList: accountBookSharerList, fetchSharerList: fetchAccountBookSharerList, insertSharer, updateSharer };
 }

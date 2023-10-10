@@ -18,15 +18,19 @@ class AccountBookSharerService(
 ) {
 
     @Transactional
-    fun findAccountBookSharers(user: User, accountBookId: Long): List<AccountBookSharerDTO> {
+    fun findAccountBookSharers(user: User, accountBookId: Long): AccountBookSharerListDTO {
         val accountBook = accountBookRepository.findById(accountBookId)
             .orElseThrow { NotFoundException("Account book not found") }
 
         checkPermission(user, accountBook, ViewableRole)
 
+        val currentSharer = accountBookSharerRepository.findByUserAndAccountBook(user, accountBook)!!
         val sharers = accountBook.sharers
-
-        return sharers.map { accountBookSharerConverter.toShowDTO(it) }
+        return AccountBookSharerListDTO(
+            currentSharerId = currentSharer.id!!,
+            currentUserRole = currentSharer.role.name,
+            list = sharers.map { accountBookSharerConverter.toShowDTO(it) },
+        )
     }
 
     @Transactional

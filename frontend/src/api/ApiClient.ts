@@ -5,6 +5,7 @@ import { CreateAccountBookItem, UpdateAccountBookItem } from "@/api/types/Accoun
 import { AccountBook } from "@/types/accountBook";
 import { AccountBookItem } from "@/types/AccountBookItem";
 import { AccountBookSharer } from "@/types/AccountBookSharer";
+import { AccountBookSharerListResponse } from "@/api/types/AccountBookSharerListResponse";
 
 function getToken(): string {
   return Cookies.get(ACCESS_TOKEN) || "";
@@ -97,7 +98,7 @@ export function deleteAccountBook(id: number): Promise<ApiResponse<void>> {
   });
 }
 
-export function getAccountBookSharers(accountBookId: number): Promise<ApiResponse<AccountBookSharer[]>> {
+export function getAccountBookSharers(accountBookId: number): Promise<ApiResponse<AccountBookSharerListResponse>> {
   return request({
     url: `${API_BASE_URL}/sharer/${accountBookId}`,
     method: 'GET',

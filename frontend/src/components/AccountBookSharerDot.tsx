@@ -12,11 +12,12 @@ import {
 import { AccountBookSharer } from "@/types/AccountBookSharer";
 
 type AccountBookSharerProps = {
+  currentUserRole: string;
   sharer: AccountBookSharer;
   onRoleChangeRequest: (id: number, nextRole: string) => void
 };
 
-function AccountBookSharerDot({ sharer, onRoleChangeRequest }: AccountBookSharerProps) {
+function AccountBookSharerDot({ currentUserRole, sharer, onRoleChangeRequest }: AccountBookSharerProps) {
   const [role, setRole] = React.useState(sharer.role);
 
   const handleRoleChange = (s: Selection) => {
@@ -47,7 +48,7 @@ function AccountBookSharerDot({ sharer, onRoleChangeRequest }: AccountBookSharer
           <p className="font-semibold">{sharer.displayName || sharer.userName}</p>
           <p className="font-semibold">{sharer.userEmail}</p>
         </DropdownItem>
-        {sharer.role === 'OWNER' ? (
+        {(currentUserRole === 'OWNER' && sharer.userEmail != null) ? (
           <DropdownSection>
             <DropdownItem key="OWNER">OWNER</DropdownItem>
             <DropdownItem key="EDITOR">EDITOR</DropdownItem>

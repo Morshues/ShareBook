@@ -12,6 +12,12 @@ data class AccountBookSharerDTO(
     val createdAt: Long,
 )
 
+data class AccountBookSharerListDTO(
+    val currentSharerId: Long,
+    val currentUserRole: String,
+    val list: List<AccountBookSharerDTO>,
+)
+
 data class AccountBookSharerCreateDTO(
     val accountBookId: Long,
     val displayName: String?,
