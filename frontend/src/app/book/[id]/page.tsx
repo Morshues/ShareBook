@@ -27,7 +27,7 @@ export default function AccountBook() {
 
   const onDeleteAccountBookItem = (item: AccountBookItem) => {
     deleteAccountBookItemRef.current?.open(item);
-  };
+  }
 
   return (
     <div>
@@ -38,8 +38,8 @@ export default function AccountBook() {
           <p>{accountBook.description}</p>
           <AccountBookSharersBar accountBookId={id} />
           <AccountBookItemList accountBookItemList={accountBook.items || []} onEdit={onEditAccountBookItem} onDelete={onDeleteAccountBookItem} />
-          <AccountBookItemEditor ref={editAccountBookItemRef} accountBookId={accountBook.id} onCreated={insertItem} onEdited={updateItem} />
-          <DeleteAccountBookItem ref={deleteAccountBookItemRef} onDeleted={deleteItem} />
+          <AccountBookItemEditor ref={editAccountBookItemRef} accountBookId={accountBook.id} onCreateRequest={insertItem} onEditRequest={updateItem} />
+          <DeleteAccountBookItem ref={deleteAccountBookItemRef} onDeleteRequest={deleteItem} />
         </div>
       ) : (
         <p>Loading...</p>

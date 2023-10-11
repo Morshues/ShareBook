@@ -9,7 +9,6 @@ import {
   Button,
 } from "@nextui-org/react";
 
-import { deleteAccountBook } from "@/api/ApiClient";
 import { AccountBook } from "@/types/accountBook";
 
 type DeleteAccountBookRef = {
@@ -17,10 +16,10 @@ type DeleteAccountBookRef = {
 }
 
 type DeleteAccountBookProps = {
-  onDeleted?: (id: number) => void;
+  onDeleteRequest: (id: number) => void;
 };
 
-const DeleteAccountBook = forwardRef<DeleteAccountBookRef, DeleteAccountBookProps>(({ onDeleted }: DeleteAccountBookProps, ref) => {
+const DeleteAccountBook = forwardRef<DeleteAccountBookRef, DeleteAccountBookProps>(({ onDeleteRequest }: DeleteAccountBookProps, ref) => {
   const {isOpen, onOpen, onClose, onOpenChange} = useDisclosure();
   const [accountBook, setAccountBook] = useState<AccountBook | null>(null);
 
@@ -34,12 +33,8 @@ const DeleteAccountBook = forwardRef<DeleteAccountBookRef, DeleteAccountBookProp
   }));
 
   const handleDelete = (): void => {
-    deleteAccountBook(accountBook!!.id).then(() => {
-      if (onDeleted) {
-        onClose();
-        onDeleted(accountBook!!.id);
-      }
-    })
+    onDeleteRequest(accountBook!!.id);
+    onClose();
   };
 
   return (

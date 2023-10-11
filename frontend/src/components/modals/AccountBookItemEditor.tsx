@@ -10,8 +10,8 @@ import {
   Input,
 } from "@nextui-org/react";
 
-import { createAccountBookItem, updateAccountBookItem } from "@/api/ApiClient";
 import { AccountBookItem } from "@/types/AccountBookItem";
+import { CreateAccountBookItem, UpdateAccountBookItem } from "@/api/types/AccountBookItem";
 
 type AccountBookItemEditorRef = {
   openCreate: () => void;
@@ -20,12 +20,12 @@ type AccountBookItemEditorRef = {
 
 type AccountBookItemEditorProps = {
   accountBookId: number;
-  onCreated?: (item: AccountBookItem) => void;
-  onEdited?: (accountBookItem: AccountBookItem) => void;
+  onCreateRequest?: (item: CreateAccountBookItem) => void;
+  onEditRequest?: (item: UpdateAccountBookItem) => void;
 };
 
 const AccountBookItemEditor = forwardRef<AccountBookItemEditorRef, AccountBookItemEditorProps>(
-  ({ accountBookId, onCreated, onEdited }: AccountBookItemEditorProps,
+  ({ accountBookId, onCreateRequest, onEditRequest }: AccountBookItemEditorProps,
   ref
 ) => {
   const {isOpen, onOpen, onClose, onOpenChange} = useDisclosure();
@@ -81,21 +81,17 @@ const AccountBookItemEditor = forwardRef<AccountBookItemEditorRef, AccountBookIt
   }
 
   const handleCreate = (): void => {
-    createAccountBookItem(generateSubmitItem()).then(response => {
-      onClose();
-      if (onCreated) {
-        onCreated(response.data);
-      }
-    })
+    onClose();
+    if (onCreateRequest) {
+      onCreateRequest(generateSubmitItem());
+    }
   };
 
   const handleEdit = (): void => {
-    updateAccountBookItem(generateSubmitItem()).then(response => {
-      onClose();
-      if (onEdited) {
-        onEdited(response.data);
-      }
-    })
+    onClose();
+    if (onEditRequest) {
+      onEditRequest(generateSubmitItem());
+    }
   };
 
   const isCreatorMode = editorType === 'creator';

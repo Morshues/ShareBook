@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
-import { getAccountBook } from "@/api/ApiClient";
+import { getAccountBook, createAccountBookItem, updateAccountBookItem, deleteAccountBookItem } from "@/api/ApiClient";
+import { CreateAccountBookItem, UpdateAccountBookItem } from "@/api/types/AccountBookItem";
 import { AccountBook } from "@/types/accountBook";
-import { AccountBookItem } from "@/types/AccountBookItem";
 
 export const useAccountBook = (accountBookId: number) => {
   const [accountBook, setAccountBook] = useState<AccountBook | null>(null);
@@ -33,34 +33,40 @@ export const useAccountBook = (accountBookId: number) => {
     }
   };
 
-  const insertItem = (item: AccountBookItem) => {
-    setAccountBook(prevAccountBook => {
-      if (prevAccountBook == null) return null;
-      return {
-        ...prevAccountBook,
-        items: [...prevAccountBook.items || [], item]
-      }
+  const insertItem = (item: CreateAccountBookItem) => {
+    createAccountBookItem(item).then(response => {
+      setAccountBook(prevAccountBook => {
+        if (prevAccountBook == null) return null;
+        return {
+          ...prevAccountBook,
+          items: [...prevAccountBook.items || [], response.data]
+        }
+      });
     });
   }
 
-  const updateItem = (targetItem: AccountBookItem) => {
-    setAccountBook(prevAccountBook => {
-      if (prevAccountBook == null) return null;
-      return {
-        ...prevAccountBook,
-        items: prevAccountBook.items?.map(item => item.id === targetItem.id ? targetItem : item)
-      }
+  const updateItem = (targetItem: UpdateAccountBookItem) => {
+    updateAccountBookItem(targetItem).then(response => {
+      setAccountBook(prevAccountBook => {
+        if (prevAccountBook == null) return null;
+        return {
+          ...prevAccountBook,
+          items: prevAccountBook.items?.map(item => item.id === response.data.id ? response.data : item)
+        }
+      });
     });
   }
 
   const deleteItem = (id: number) => {
-    setAccountBook(prevAccountBook => {
-      if (prevAccountBook == null) return null;
-      return {
-        ...prevAccountBook,
-        items: prevAccountBook.items?.filter(item => item.id !== id)
-      }
-    });
+    deleteAccountBookItem(id).then(() => {
+      setAccountBook(prevAccountBook => {
+        if (prevAccountBook == null) return null;
+        return {
+          ...prevAccountBook,
+          items: prevAccountBook.items?.filter(item => item.id !== id)
+        }
+      });
+    })
   }
 
 

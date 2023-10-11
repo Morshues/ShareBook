@@ -11,7 +11,6 @@ import {
   Textarea,
 } from "@nextui-org/react";
 
-import { createAccountBook, updateAccountBook } from "@/api/ApiClient";
 import { AccountBook } from "@/types/accountBook";
 
 type EditAccountBookRef = {
@@ -20,11 +19,11 @@ type EditAccountBookRef = {
 }
 
 type EditAccountBookProps = {
-  onCreated?: (accountBook: AccountBook) => void;
-  onEdited?: (accountBook: AccountBook) => void;
+  onCreateRequest?: (name: string, description: string) => void;
+  onEditRequest?: (id: number, name: string, description: string) => void;
 };
 
-const AccountBookEditor = forwardRef<EditAccountBookRef, EditAccountBookProps>(({ onCreated, onEdited }: EditAccountBookProps, ref) => {
+const AccountBookEditor = forwardRef<EditAccountBookRef, EditAccountBookProps>(({ onCreateRequest, onEditRequest }: EditAccountBookProps, ref) => {
   const {isOpen, onOpen, onClose, onOpenChange} = useDisclosure();
   const [editorType, setEditorType] = useState<'creator' | 'editor'>('creator');
   const [id, setId] = useState(0)
@@ -56,21 +55,17 @@ const AccountBookEditor = forwardRef<EditAccountBookRef, EditAccountBookProps>((
   }));
 
   const handleCreate = (): void => {
-    createAccountBook({name: name.trim(), description}).then(response => {
-      onClose();
-      if (onCreated) {
-        onCreated(response.data);
-      }
-    })
+    onClose();
+    if (onCreateRequest) {
+      onCreateRequest(name.trim(), description);
+    }
   };
 
   const handleEdit = (): void => {
-    updateAccountBook({ id, name: name.trim(), description}).then(response => {
-      onClose();
-      if (onEdited) {
-        onEdited(response.data);
-      }
-    })
+    onClose();
+    if (onEditRequest) {
+      onEditRequest(id, name.trim(), description);
+    }
   };
 
   const isCreatorMode = editorType === 'creator';

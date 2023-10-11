@@ -53,8 +53,8 @@ export default function User() {
       <Button onPress={() => editAccountBookRef.current?.openCreate()}>Create New Account Book</Button>
       <UserProfile user={currentUser} />
       <AccountBookList accountBookList={bookList} onEdit={onEditAccountBook} onDelete={onDeleteAccountBook} />
-      <AccountBookEditor ref={editAccountBookRef} onCreated={insertAccountBook} onEdited={updateAccountBook} />
-      <DeleteAccountBook ref={deleteAccountBookRef} onDeleted={deleteAccountBook} />
+      <AccountBookEditor ref={editAccountBookRef} onCreateRequest={insertAccountBook} onEditRequest={updateAccountBook} />
+      <DeleteAccountBook ref={deleteAccountBookRef} onDeleteRequest={deleteAccountBook} />
     </div>
   )
 }
