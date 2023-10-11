@@ -25,16 +25,20 @@ function AccountBookSharersBar({ accountBookId }: AccountBookSharersBarProps) {
       {sharerList.map(sharer =>
         <AccountBookSharerDot currentUserRole={currentUserRole} key={sharer.id} sharer={sharer} onRoleChangeRequest={updateSharer} />
       )}
-      <Avatar
-        isBordered
-        size="sm"
-        as="button"
-        fallback={
-          <AiOutlinePlus size={30} />
-        }
-        onClick={createSharerModalRef.current?.open}
-      />
-      <CreateSharerModal ref={createSharerModalRef} onCreatedRequest={handleCreateRequest} />
+      {currentUserRole === 'OWNER' ?
+        <>
+          <Avatar
+            isBordered
+            size="sm"
+            as="button"
+            fallback={
+              <AiOutlinePlus size={30} />
+            }
+            onClick={createSharerModalRef.current?.open}
+          />
+          <CreateSharerModal ref={createSharerModalRef} onCreatedRequest={handleCreateRequest} />
+        </>
+      : ''}
     </div>
   );
 }
