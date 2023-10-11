@@ -11,14 +11,13 @@ import { useAccountBookList } from "@/hooks/useAccountBookList";
 
 import UserProfile from "@/components/UserProfile";
 import AccountBookList from "@/components/AccountBookList";
-import CreateAccountBook from "@/components/modals/CreateAccountBook";
-import EditAccountBook from "@/components/modals/EditAccountBook";
+import AccountBookEditor from "@/components/modals/AccountBookEditor";
 import DeleteAccountBook from "@/components/modals/DeleteAccountBook";
 
 export default function User() {
   const router = useRouter();
 
-  const editAccountBookRef = useRef<React.ElementRef<typeof EditAccountBook>>(null);
+  const editAccountBookRef = useRef<React.ElementRef<typeof AccountBookEditor>>(null);
   const deleteAccountBookRef = useRef<React.ElementRef<typeof DeleteAccountBook>>(null);
 
   const { user: currentUser, loaded, fetchUser, isAuthenticated } = useCurrentUser();
@@ -40,7 +39,7 @@ export default function User() {
   };
 
   const onEditAccountBook = (accountBook: AccountBook) => {
-    editAccountBookRef.current?.open(accountBook);
+    editAccountBookRef.current?.openEdit(accountBook);
   };
 
   const onDeleteAccountBook = (accountBook: AccountBook) => {
@@ -51,10 +50,10 @@ export default function User() {
     <div>
       <Button onClick={signOut}>Sign out</Button>
       <Button onClick={fetchUser}>Refresh</Button>
-      <CreateAccountBook onCreated={insertAccountBook} />
+      <Button onPress={() => editAccountBookRef.current?.openCreate()}>Create New Account Book</Button>
       <UserProfile user={currentUser} />
       <AccountBookList accountBookList={bookList} onEdit={onEditAccountBook} onDelete={onDeleteAccountBook} />
-      <EditAccountBook ref={editAccountBookRef} onEdited={updateAccountBook} />
+      <AccountBookEditor ref={editAccountBookRef} onCreated={insertAccountBook} onEdited={updateAccountBook} />
       <DeleteAccountBook ref={deleteAccountBookRef} onDeleted={deleteAccountBook} />
     </div>
   )

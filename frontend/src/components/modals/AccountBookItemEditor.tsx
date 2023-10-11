@@ -10,21 +10,27 @@ import {
   Input,
 } from "@nextui-org/react";
 
-import { updateAccountBookItem } from "@/api/ApiClient";
+import { createAccountBookItem, updateAccountBookItem } from "@/api/ApiClient";
 import { AccountBookItem } from "@/types/AccountBookItem";
 
-type EditAccountBookItemRef = {
-  open: (accountBookItem: AccountBookItem) => void;
+type AccountBookItemEditorRef = {
+  openCreate: () => void;
+  openEdit: (accountBookItem: AccountBookItem) => void;
 }
 
-type EditAccountBookItemProps = {
+type AccountBookItemEditorProps = {
+  accountBookId: number;
+  onCreated?: (item: AccountBookItem) => void;
   onEdited?: (accountBookItem: AccountBookItem) => void;
 };
 
-const EditAccountBookItem = forwardRef<EditAccountBookItemRef, EditAccountBookItemProps>(({ onEdited }: EditAccountBookItemProps, ref) => {
+const AccountBookItemEditor = forwardRef<AccountBookItemEditorRef, AccountBookItemEditorProps>(
+  ({ accountBookId, onCreated, onEdited }: AccountBookItemEditorProps,
+  ref
+) => {
   const {isOpen, onOpen, onClose, onOpenChange} = useDisclosure();
+  const [editorType, setEditorType] = useState<'creator' | 'editor'>('creator');
   const [id, setId] = useState(0);
-  const [accountBookId, setAccountBookId] = useState(0);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [value, setValue] = useState('0');
@@ -35,9 +41,19 @@ const EditAccountBookItem = forwardRef<EditAccountBookItemRef, EditAccountBookIt
     return (name.trim() === '')
   }, [name]);
 
-  const open = (item: AccountBookItem) => {
+  const openCreate = () => {
+    setEditorType('creator');
+    setName("");
+    setDescription("");
+    setValue('0');
+    setPurchasedDate(new Date().toISOString().substring(0,10));
+    setPurchasedPlace('');
+    onOpen();
+  };
+
+  const openEdit = (item: AccountBookItem) => {
+    setEditorType('editor');
     setId(item.id);
-    setAccountBookId(item.accountBookId);
     setName(item.name);
     setDescription(item.description);
     setValue(item.value.toString());
@@ -47,11 +63,13 @@ const EditAccountBookItem = forwardRef<EditAccountBookItemRef, EditAccountBookIt
   };
 
   useImperativeHandle(ref, () => ({
-    open
+    openCreate,
+    openEdit,
   }));
 
-  const handleEdit = (): void => {
-    updateAccountBookItem({
+
+  const generateSubmitItem = () => {
+    return {
       id,
       accountBookId,
       name: name.trim(),
@@ -59,18 +77,31 @@ const EditAccountBookItem = forwardRef<EditAccountBookItemRef, EditAccountBookIt
       value: parseFloat(value),
       purchasedAt: new Date(purchasedDate).getTime(),
       purchasedPlace,
-    }).then(response => {
+    }
+  }
+
+  const handleCreate = (): void => {
+    createAccountBookItem(generateSubmitItem()).then(response => {
+      onClose();
+      if (onCreated) {
+        onCreated(response.data);
+      }
+    })
+  };
+
+  const handleEdit = (): void => {
+    updateAccountBookItem(generateSubmitItem()).then(response => {
       onClose();
       if (onEdited) {
-        setName("");
-        setDescription("");
-        setValue('0');
-        setPurchasedDate(new Date().toISOString().substring(0,10));
-        setPurchasedPlace('');
         onEdited(response.data);
       }
     })
   };
+
+  const isCreatorMode = editorType === 'creator';
+  const editorTitle = isCreatorMode ? 'Create New Item' : 'Edit Account Book Item';
+  const submitButtonLabel = isCreatorMode ? 'Create' : 'Confirm';
+  const handleSubmit = isCreatorMode ? handleCreate : handleEdit;
 
   return (
     <>
@@ -78,7 +109,7 @@ const EditAccountBookItem = forwardRef<EditAccountBookItemRef, EditAccountBookIt
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">Edit Account Book Item</ModalHeader>
+              <ModalHeader className="flex flex-col gap-1">{editorTitle}</ModalHeader>
               <ModalBody>
                 <Input
                   isRequired
@@ -132,8 +163,8 @@ const EditAccountBookItem = forwardRef<EditAccountBookItemRef, EditAccountBookIt
                 <Button color="danger" variant="light" onPress={onClose}>
                   Cancel
                 </Button>
-                <Button color="primary" onPress={handleEdit} isDisabled={isNameInvalid}>
-                  Confirm
+                <Button color="primary" onPress={handleSubmit} isDisabled={isNameInvalid}>
+                  {submitButtonLabel}
                 </Button>
               </ModalFooter>
             </>
@@ -144,4 +175,4 @@ const EditAccountBookItem = forwardRef<EditAccountBookItemRef, EditAccountBookIt
   );
 })
 
-export default EditAccountBookItem;
+export default AccountBookItemEditor;

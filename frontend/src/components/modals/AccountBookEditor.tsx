@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { forwardRef, useImperativeHandle, useState } from 'react';
 import {
   Modal,
   ModalContent,
@@ -11,15 +11,23 @@ import {
   Textarea,
 } from "@nextui-org/react";
 
-import { createAccountBook } from "@/api/ApiClient";
+import { createAccountBook, updateAccountBook } from "@/api/ApiClient";
 import { AccountBook } from "@/types/accountBook";
 
-type CreateBookProps = {
+type EditAccountBookRef = {
+  openCreate: () => void;
+  openEdit: (accountBook: AccountBook) => void;
+}
+
+type EditAccountBookProps = {
   onCreated?: (accountBook: AccountBook) => void;
+  onEdited?: (accountBook: AccountBook) => void;
 };
 
-function CreateAccountBook({ onCreated }: CreateBookProps) {
+const AccountBookEditor = forwardRef<EditAccountBookRef, EditAccountBookProps>(({ onCreated, onEdited }: EditAccountBookProps, ref) => {
   const {isOpen, onOpen, onClose, onOpenChange} = useDisclosure();
+  const [editorType, setEditorType] = useState<'creator' | 'editor'>('creator');
+  const [id, setId] = useState(0)
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
 
@@ -27,25 +35,56 @@ function CreateAccountBook({ onCreated }: CreateBookProps) {
     return (name.trim() === '' || !/^[a-zA-Z0-9]+$/.test(name))
   }, [name]);
 
+  const openCreate = () => {
+    setEditorType('creator');
+    setName('');
+    setDescription('');
+    onOpen();
+  };
+
+  const openEdit = (accountBook: AccountBook) => {
+    setEditorType('editor');
+    setId(accountBook.id);
+    setName(accountBook.name);
+    setDescription(accountBook.description);
+    onOpen();
+  };
+
+  useImperativeHandle(ref, () => ({
+    openCreate,
+    openEdit,
+  }));
+
   const handleCreate = (): void => {
     createAccountBook({name: name.trim(), description}).then(response => {
+      onClose();
       if (onCreated) {
-        onClose();
-        setName("");
-        setDescription("");
         onCreated(response.data);
       }
     })
   };
 
+  const handleEdit = (): void => {
+    updateAccountBook({ id, name: name.trim(), description}).then(response => {
+      onClose();
+      if (onEdited) {
+        onEdited(response.data);
+      }
+    })
+  };
+
+  const isCreatorMode = editorType === 'creator';
+  const editorTitle = isCreatorMode ? 'Create New Account Book' : 'Edit Account Book';
+  const submitButtonLabel = isCreatorMode ? 'Create' : 'Confirm';
+  const handleSubmit = isCreatorMode ? handleCreate : handleEdit;
+
   return (
     <>
-      <Button onPress={onOpen}>Create New Account Book</Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">Create New Account Book</ModalHeader>
+              <ModalHeader className="flex flex-col gap-1">{editorTitle}</ModalHeader>
               <ModalBody>
                 <Input
                   autoFocus
@@ -68,8 +107,8 @@ function CreateAccountBook({ onCreated }: CreateBookProps) {
                 <Button color="danger" variant="light" onPress={onClose}>
                   Cancel
                 </Button>
-                <Button color="primary" onPress={handleCreate} isDisabled={isNameInvalid}>
-                  Create
+                <Button color="primary" onPress={handleSubmit} isDisabled={isNameInvalid}>
+                  {submitButtonLabel}
                 </Button>
               </ModalFooter>
             </>
@@ -78,6 +117,6 @@ function CreateAccountBook({ onCreated }: CreateBookProps) {
       </Modal>
     </>
   );
-}
+})
 
-export default CreateAccountBook;
+export default AccountBookEditor;
