@@ -16,8 +16,8 @@ function AccountBookSharersBar({ accountBookId }: AccountBookSharersBarProps) {
 
   const { currentUserRole, sharerList, insertSharer, updateSharer } = useAccountBookSharerList(accountBookId);
 
-  const handleCreateRequest = (name: string, role: string) => {
-    insertSharer(accountBookId, name, role);
+  const handleCreateRequest = (name: string, role: string, email?: string) => {
+    insertSharer(accountBookId, name, role, email);
   }
 
   return (

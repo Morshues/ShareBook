@@ -21,6 +21,7 @@ data class AccountBookSharerListDTO(
 data class AccountBookSharerCreateDTO(
     val accountBookId: Long,
     val displayName: String?,
+    val email: String?,
     val role: String,
 )
 

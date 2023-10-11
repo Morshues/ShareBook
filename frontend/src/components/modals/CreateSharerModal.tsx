@@ -15,12 +15,13 @@ type CreateSharerModalRef = {
 }
 
 type CreateSharerModalProps = {
-  onCreatedRequest: (name: string, role: string) => void;
+  onCreatedRequest: (name: string, role: string, email?: string) => void;
 };
 
 const CreateSharerModal = forwardRef<CreateSharerModalRef, CreateSharerModalProps>(({ onCreatedRequest }: CreateSharerModalProps, ref) => {
   const {isOpen, onOpen, onClose, onOpenChange} = useDisclosure();
   const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [role, setRole] = React.useState('VIEWER');
 
   const isNameInvalid = React.useMemo(() => {
@@ -36,9 +37,11 @@ const CreateSharerModal = forwardRef<CreateSharerModalRef, CreateSharerModalProp
   }));
 
   const handleCreateRequest = (): void => {
-    onCreatedRequest(name, role);
+    let toSendEmail = (email.trim() === '') ? undefined : email.trim()
+    onCreatedRequest(name, role, toSendEmail);
     onClose();
     setName('');
+    setEmail('')
     setRole('VIEWER');
   }
 
@@ -58,6 +61,14 @@ const CreateSharerModal = forwardRef<CreateSharerModalRef, CreateSharerModalProp
                 value={name}
                 onValueChange={setName}
                 isInvalid={isNameInvalid}
+              />
+              <Input
+                type="email"
+                label="email"
+                labelPlacement="outside"
+                placeholder="(Optional)"
+                value={email}
+                onValueChange={setEmail}
               />
               <RadioGroup
                 label="Select the role of the sharer"

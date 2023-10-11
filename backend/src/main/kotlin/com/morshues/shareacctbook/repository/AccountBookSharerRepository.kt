@@ -7,7 +7,7 @@ import org.springframework.data.repository.CrudRepository
 
 interface AccountBookSharerRepository : CrudRepository<AccountBookSharer, Long> {
 
-    fun findByUserAndAccountBook(user: User, accountBook: AccountBook): AccountBookSharer?
+    fun findByUserAndAccountBook(user: User?, accountBook: AccountBook): AccountBookSharer?
 
     fun deleteAllByAccountBook(accountBook: AccountBook)
 

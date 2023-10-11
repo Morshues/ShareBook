@@ -26,8 +26,8 @@ export const useAccountBookSharerList = (accountBookId: number) => {
     fetchAccountBookSharerList().then(/* Do Nothing */);
   }, [fetchAccountBookSharerList]);
 
-  const insertSharer = (id: number, name: string, role: string) => {
-    createAccountBookSharer(id, name, role).then(response => {
+  const insertSharer = (id: number, name: string, role: string, email?: string) => {
+    createAccountBookSharer(id, name, role, email).then(response => {
       const createdSharer = response.data;
       setAccountBookSharerList(prevList => [...prevList, createdSharer]);
     })

@@ -2,16 +2,19 @@ package com.morshues.shareacctbook.service
 
 import com.morshues.shareacctbook.dto.*
 import com.morshues.shareacctbook.dto.converter.AccountBookSharerConverter
+import com.morshues.shareacctbook.handler.InvalidArgumentException
 import com.morshues.shareacctbook.handler.NoPermissionException
 import com.morshues.shareacctbook.handler.NotFoundException
 import com.morshues.shareacctbook.model.*
 import com.morshues.shareacctbook.repository.AccountBookRepository
 import com.morshues.shareacctbook.repository.AccountBookSharerRepository
+import com.morshues.shareacctbook.repository.UserRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 class AccountBookSharerService(
+    private val userRepository: UserRepository,
     private val accountBookRepository: AccountBookRepository,
     private val accountBookSharerRepository: AccountBookSharerRepository,
     private val accountBookSharerConverter: AccountBookSharerConverter,
@@ -40,8 +43,15 @@ class AccountBookSharerService(
 
         checkPermission(user, accountBook, listOf(SharerRole.OWNER))
 
+        val sharingUser = userRepository.findByEmail(createSharerDTO.email)
+        val existingSharer = accountBookSharerRepository.findByUserAndAccountBook(sharingUser, accountBook)
+        if (existingSharer != null) {
+            throw InvalidArgumentException("the sharer [${createSharerDTO.email}] already exist")
+        }
+
         val accountBookSharer = AccountBookSharer(
             accountBook = accountBook,
+            user = sharingUser,
             displayName = createSharerDTO.displayName,
             role = SharerRole.valueOf(createSharerDTO.role),
         )
