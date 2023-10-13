@@ -48,7 +48,7 @@ export default function AccountBook() {
             onCreateRequest={handleSharerCreateRequest}
             onRoleUpdateRequest={updateSharer}
           />
-          <AccountBookItemList accountBookItemList={accountBook.items || []} onEdit={onEditAccountBookItem} onDelete={onDeleteAccountBookItem} />
+          <AccountBookItemList sharerList={sharerList} accountBookItemList={accountBook.items || []} onEdit={onEditAccountBookItem} onDelete={onDeleteAccountBookItem} />
           <AccountBookItemEditor ref={editAccountBookItemRef} accountBookId={accountBook.id} sharerList={sharerList} onCreateRequest={insertItem} onEditRequest={updateItem} />
           <DeleteAccountBookItem ref={deleteAccountBookItemRef} onDeleteRequest={deleteItem} />
         </div>

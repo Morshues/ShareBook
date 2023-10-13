@@ -9,15 +9,17 @@ import {
   Selection
 } from "@nextui-org/react";
 
+import { SHARER_COLOR_NONE, SHARER_COLORS } from "@/constants/sharer_colors";
 import { AccountBookSharer } from "@/types/AccountBookSharer";
 
 type AccountBookSharerProps = {
+  index: number;
   currentUserRole: string;
   sharer: AccountBookSharer;
   onRoleChangeRequest: (id: number, nextRole: string) => void;
 };
 
-function AccountBookSharerDot({ currentUserRole, sharer, onRoleChangeRequest }: AccountBookSharerProps) {
+function AccountBookSharerDot({ index, currentUserRole, sharer, onRoleChangeRequest }: AccountBookSharerProps) {
 
   const handleRoleChange = (s: Selection) => {
     let newRole = [...s][0] as string;
@@ -31,6 +33,7 @@ function AccountBookSharerDot({ currentUserRole, sharer, onRoleChangeRequest }: 
           isBordered
           size="sm"
           as="button"
+          className={`ring-${SHARER_COLORS[index] || SHARER_COLOR_NONE}`}
           src={sharer.userImg}
         />
       </DropdownTrigger>

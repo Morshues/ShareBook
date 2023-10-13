@@ -19,8 +19,8 @@ function AccountBookSharersBar({ currentUserRole, sharerList, onCreateRequest, o
 
   return (
     <div className="flex">
-      {sharerList.map(sharer =>
-        <AccountBookSharerDot currentUserRole={currentUserRole} key={sharer.id} sharer={sharer} onRoleChangeRequest={onRoleUpdateRequest} />
+      {sharerList.map((sharer, index) =>
+        <AccountBookSharerDot index={index} currentUserRole={currentUserRole} key={sharer.id} sharer={sharer} onRoleChangeRequest={onRoleUpdateRequest} />
       )}
       {currentUserRole === 'OWNER' ?
         <>

@@ -111,7 +111,6 @@ const AccountBookItemEditor = forwardRef<AccountBookItemEditorRef, AccountBookIt
         setFlows(prevFlows => prevFlows.map(flow => ({...flow, value: 0}) ))
         break;
       case 'average':
-        console.log("ave")
         const average = value/flows.length;
         setFlows(prevFlows => prevFlows.map(flow => ({...flow, value: average}) ))
         break;

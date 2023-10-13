@@ -1,26 +1,39 @@
 import React from "react";
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Tooltip } from "@nextui-org/react";
+import {
+  Table,
+  TableHeader,
+  TableColumn,
+  TableBody,
+  TableRow,
+  TableCell,
+  Tooltip,
+  Popover, PopoverTrigger, PopoverContent,
+} from "@nextui-org/react";
 import { RiDeleteBin7Fill } from "react-icons/ri";
-import { MdModeEditOutline } from "react-icons/md";
+import { MdDocumentScanner, MdModeEditOutline } from "react-icons/md";
 
 import { AccountBookItem } from "@/types/AccountBookItem";
+import { AccountBookSharer } from "@/types/AccountBookSharer";
+
+import PriceBar from "@/components/PriceBar";
+import AccountBookItemDetail from "@/components/AccountBookItemDetail";
 
 type AccountBookItemListProps = {
+  sharerList: AccountBookSharer[];
   accountBookItemList: AccountBookItem[];
   onEdit: (accountBookItem: AccountBookItem) => void;
   onDelete: (accountBookItem: AccountBookItem) => void;
 };
 
-const accountBookItemColumns = [
-  {name: "Name", uid: "name"},
-  {name: "Price", uid: "value"},
-  {name: "Purchased Place", uid: "purchased_place"},
-  {name: "Purchased At", uid: "purchased_at"},
-  {name: "Created At", uid: "created_at"},
-  {name: "Actions", uid: "actions"},
+const accountBookItemColumns: {name: string, uid: string, align: ('start'|'end'|'center'), className: string}[] = [
+  {name: "Name", uid: "name", align: "start", className: "w-40"},
+  {name: "", uid: "price_bar", align: "center", className: "w-auto"},
+  {name: "Price", uid: "value", align: "end", className: "w-28 text-end"},
+  {name: "Purchased At", uid: "purchased_at", align: "start", className: "w-20"},
+  {name: "Actions", uid: "actions", align: "center", className: "w-20"},
 ];
 
-function AccountBookItemList({ accountBookItemList, onEdit, onDelete }: AccountBookItemListProps) {
+function AccountBookItemList({ sharerList, accountBookItemList, onEdit, onDelete }: AccountBookItemListProps) {
   const handleEditClick = (accountBookItem: AccountBookItem) => () => {
     onEdit(accountBookItem);
   }
@@ -42,18 +55,27 @@ function AccountBookItemList({ accountBookItemList, onEdit, onDelete }: AccountB
           </Tooltip>
         );
       case "value":
-        return accountBookItem.value;
-      case "purchased_place":
-        return accountBookItem.purchasedPlace;
+        return <span className="float-right">{accountBookItem.value}</span>
+      case "price_bar":
+        return (
+          <PriceBar flows={accountBookItem.flows} value={accountBookItem.value} />
+        )
       case "purchased_at":
         let purchasedDate = new Date(accountBookItem.purchasedAt);
         return purchasedDate.toLocaleDateString();
-      case "created_at":
-        let createdDate = new Date(accountBookItem.createdAt);
-        return `${createdDate.toLocaleDateString()} ${createdDate.toLocaleTimeString()}`;
       case "actions":
         return (
           <div className="relative flex items-center gap-2">
+            <Popover placement="left">
+              <PopoverTrigger>
+                <span className="text-lg text-default-400 cursor-pointer hover:opacity-50">
+                  <MdDocumentScanner />
+                </span>
+              </PopoverTrigger>
+              <PopoverContent>
+                <AccountBookItemDetail sharerList={sharerList} item={accountBookItem} />
+              </PopoverContent>
+            </Popover>
             <span className="text-lg text-default-400 cursor-pointer hover:opacity-50" onClick={handleEditClick(accountBookItem)}>
               <MdModeEditOutline />
             </span>
@@ -68,15 +90,15 @@ function AccountBookItemList({ accountBookItemList, onEdit, onDelete }: AccountB
   }, []);
 
   return (
-    <Table aria-label="Example table with custom cells">
+    <Table aria-label="Example table with custom cells" className="table-fixed">
       <TableHeader columns={accountBookItemColumns}>
         {(column) => (
-          <TableColumn key={column.uid} align={column.uid === "actions" ? "center" : "start"}>
+          <TableColumn key={column.uid} align={column.align} className={column.className}>
             {column.name}
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody items={accountBookItemList}>
+      <TableBody items={accountBookItemList} emptyContent={"No items to display."}>
         {(accountBookItem) => (
           <TableRow key={accountBookItem.id}>
             {(columnKey) => <TableCell>{renderCell(accountBookItem, columnKey)}</TableCell>}
