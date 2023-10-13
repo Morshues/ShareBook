@@ -89,23 +89,43 @@ function AccountBookItemList({ sharerList, accountBookItemList, onEdit, onDelete
     }
   }, []);
 
+  const totalSum = accountBookItemList.reduce((accumulator: number, item: AccountBookItem) => {
+    return accumulator + item.value;
+  }, 0);
+
+  const sumBySharerId = accountBookItemList.reduce<{[key: number]: ({value:number, sharerId: number})}>((acc, item) => {
+    item.flows.forEach(flow => {
+      if (!acc[flow.sharerId]) {
+        acc[flow.sharerId] = {sharerId: flow.sharerId, value: 0};
+      }
+      acc[flow.sharerId].value += flow.value;
+    });
+    return acc;
+  }, {});
+
   return (
-    <Table aria-label="Example table with custom cells" className="table-fixed">
-      <TableHeader columns={accountBookItemColumns}>
-        {(column) => (
-          <TableColumn key={column.uid} align={column.align} className={column.className}>
-            {column.name}
-          </TableColumn>
-        )}
-      </TableHeader>
-      <TableBody items={accountBookItemList} emptyContent={"No items to display."}>
-        {(accountBookItem) => (
-          <TableRow key={accountBookItem.id}>
-            {(columnKey) => <TableCell>{renderCell(accountBookItem, columnKey)}</TableCell>}
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
+    <>
+      <Table aria-label="Example table with custom cells" className="table-fixed">
+        <TableHeader columns={accountBookItemColumns}>
+          {(column) => (
+            <TableColumn key={column.uid} align={column.align} className={column.className}>
+              {column.name}
+            </TableColumn>
+          )}
+        </TableHeader>
+        <TableBody items={accountBookItemList} emptyContent={"No items to display."}>
+          {(accountBookItem) => (
+            <TableRow key={accountBookItem.id}>
+              {(columnKey) => <TableCell>{renderCell(accountBookItem, columnKey)}</TableCell>}
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+      <div>
+        <h2>Sum: {totalSum}</h2>
+        <PriceBar flows={Object.values(sumBySharerId)} value={totalSum} showNumber={true} />
+      </div>
+    </>
   );
 }
 

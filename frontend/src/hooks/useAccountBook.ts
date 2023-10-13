@@ -51,7 +51,7 @@ export const useAccountBook = (accountBookId: number) => {
         if (prevAccountBook == null) return null;
         return {
           ...prevAccountBook,
-          items: prevAccountBook.items?.map(item => item.id === response.data.id ? response.data : item)
+          items: prevAccountBook.items.map(item => item.id === response.data.id ? response.data : item)
         }
       });
     });
@@ -63,7 +63,7 @@ export const useAccountBook = (accountBookId: number) => {
         if (prevAccountBook == null) return null;
         return {
           ...prevAccountBook,
-          items: prevAccountBook.items?.filter(item => item.id !== id)
+          items: prevAccountBook.items.filter(item => item.id !== id)
         }
       });
     })

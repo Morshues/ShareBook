@@ -5,5 +5,5 @@ export type AccountBook = {
   name: string;
   description: string;
   createdAt: number;
-  items?: AccountBookItem[];
+  items: AccountBookItem[];
 };
