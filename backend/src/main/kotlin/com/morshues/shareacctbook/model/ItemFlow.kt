@@ -21,8 +21,7 @@ data class ItemFlow(
     val sharer: AccountBookSharer,
 
     @Column(name = "created_at")
-    private val createdAt: ZonedDateTime = ZonedDateTime.now(),
+    val createdAt: ZonedDateTime = ZonedDateTime.now(),
 
-    val value: BigDecimal,
-
-    )
+    var value: BigDecimal,
+)

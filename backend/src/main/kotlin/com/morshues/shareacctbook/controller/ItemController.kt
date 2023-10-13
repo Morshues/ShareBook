@@ -19,10 +19,10 @@ class ItemController(
     @PutMapping("/create")
     fun addAccountBookItem(
         @CurrentUser userPrincipal: UserPrincipal,
-        @RequestBody createAccountBookItemDTO: CreateAccountBookItemDTO,
-    ): ResponseEntity<ApiResponse<ShowAccountBookItemDTO>> {
+        @RequestBody accountBookItemCreateDTO: AccountBookItemCreateDTO,
+    ): ResponseEntity<ApiResponse<AccountBookItemShowDTO>> {
         val user = userService.getUserFromPrincipal(userPrincipal)
-        val savedItemDto = accountBookItemService.createAccountBookItem(user, createAccountBookItemDTO)
+        val savedItemDto = accountBookItemService.createAccountBookItem(user, accountBookItemCreateDTO)
         val response = ApiResponse(
             status = "success",
             data = savedItemDto,
@@ -33,8 +33,8 @@ class ItemController(
     @PatchMapping("/update")
     fun updateAccountBook(
         @CurrentUser userPrincipal: UserPrincipal,
-        @RequestBody accountBookItemDTO: EditAccountBookItemDTO,
-    ): ResponseEntity<ApiResponse<ShowAccountBookItemDTO>> {
+        @RequestBody accountBookItemDTO: AccountBookItemEditDTO,
+    ): ResponseEntity<ApiResponse<AccountBookItemShowDTO>> {
         val user = userService.getUserFromPrincipal(userPrincipal)
         val savedItemDto = accountBookItemService.updateAccountBookItem(user, accountBookItemDTO)
         val response = ApiResponse(

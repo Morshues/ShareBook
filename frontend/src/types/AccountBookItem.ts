@@ -1,3 +1,5 @@
+import { ItemFlow } from "@/types/ItemFlow";
+
 export type AccountBookItem = {
   id: number;
   accountBookId: number;
@@ -7,4 +9,5 @@ export type AccountBookItem = {
   purchasedAt: number;
   purchasedPlace: string;
   createdAt: number;
+  flows: ItemFlow[];
 };

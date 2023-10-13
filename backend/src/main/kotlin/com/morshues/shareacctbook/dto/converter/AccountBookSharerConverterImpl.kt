@@ -1,8 +1,6 @@
 package com.morshues.shareacctbook.dto.converter
 
 import com.morshues.shareacctbook.dto.AccountBookSharerDTO
-import com.morshues.shareacctbook.dto.ShowAccountBookItemDTO
-import com.morshues.shareacctbook.model.AccountBookItem
 import com.morshues.shareacctbook.model.AccountBookSharer
 import org.springframework.stereotype.Component
 

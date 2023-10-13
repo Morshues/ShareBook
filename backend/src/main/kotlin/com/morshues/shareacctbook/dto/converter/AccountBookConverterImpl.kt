@@ -1,7 +1,8 @@
 package com.morshues.shareacctbook.dto.converter
 
 import com.morshues.shareacctbook.dto.ShowAccountBookDTO
-import com.morshues.shareacctbook.dto.ShowAccountBookItemDTO
+import com.morshues.shareacctbook.dto.AccountBookItemShowDTO
+import com.morshues.shareacctbook.dto.ItemFlowShowDTO
 import com.morshues.shareacctbook.model.AccountBook
 import org.springframework.stereotype.Component
 
@@ -22,7 +23,7 @@ class AccountBookConverterImpl : AccountBookConverter {
             name = accountBook.name,
             description = accountBook.description,
             createdAt = accountBook.createdAt.toInstant().toEpochMilli(),
-            items = accountBook.items.map { item -> ShowAccountBookItemDTO(
+            items = accountBook.items.map { item -> AccountBookItemShowDTO(
                 id = item.id!!,
                 accountBookId = accountBook.id,
                 name = item.name,
@@ -30,7 +31,14 @@ class AccountBookConverterImpl : AccountBookConverter {
                 value = item.value,
                 purchasedAt = item.purchasedAt.toInstant().toEpochMilli(),
                 purchasedPlace = item.purchasedPlace,
-                createdAt = item.createdAt.toInstant().toEpochMilli()
+                createdAt = item.createdAt.toInstant().toEpochMilli(),
+                flows = item.flows.map { flow -> ItemFlowShowDTO(
+                    id = flow.id!!,
+                    itemId = flow.item.id!!,
+                    sharerId = flow.sharer.id!!,
+                    value = flow.value,
+                    createdAt = flow.createdAt.toInstant().toEpochMilli(),
+                ) },
             )}
         )
     }

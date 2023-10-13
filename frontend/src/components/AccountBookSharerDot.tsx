@@ -14,11 +14,10 @@ import { AccountBookSharer } from "@/types/AccountBookSharer";
 type AccountBookSharerProps = {
   currentUserRole: string;
   sharer: AccountBookSharer;
-  onRoleChangeRequest: (id: number, nextRole: string) => void
+  onRoleChangeRequest: (id: number, nextRole: string) => void;
 };
 
 function AccountBookSharerDot({ currentUserRole, sharer, onRoleChangeRequest }: AccountBookSharerProps) {
-  const [role, setRole] = React.useState(sharer.role);
 
   const handleRoleChange = (s: Selection) => {
     let newRole = [...s][0] as string;
@@ -41,7 +40,7 @@ function AccountBookSharerDot({ currentUserRole, sharer, onRoleChangeRequest }: 
         disabledKeys={["profile", "fixedRole"]}
         disallowEmptySelection
         selectionMode="single"
-        selectedKeys={[role]}
+        selectedKeys={[sharer.role]}
         onSelectionChange={handleRoleChange}
       >
         <DropdownItem key="profile" textValue={"Profile"} className="h-14 gap-2">

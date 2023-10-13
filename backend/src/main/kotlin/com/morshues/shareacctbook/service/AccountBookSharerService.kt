@@ -44,9 +44,11 @@ class AccountBookSharerService(
         checkPermission(user, accountBook, listOf(SharerRole.OWNER))
 
         val sharingUser = userRepository.findByEmail(createSharerDTO.email)
-        val existingSharer = accountBookSharerRepository.findByUserAndAccountBook(sharingUser, accountBook)
-        if (existingSharer != null) {
-            throw InvalidArgumentException("the sharer [${createSharerDTO.email}] already exist")
+        sharingUser?.run {
+            val existingSharer = accountBookSharerRepository.findByUserAndAccountBook(sharingUser, accountBook)
+            if (existingSharer != null) {
+                throw InvalidArgumentException("the sharer [${createSharerDTO.email}] already exist")
+            }
         }
 
         val accountBookSharer = AccountBookSharer(

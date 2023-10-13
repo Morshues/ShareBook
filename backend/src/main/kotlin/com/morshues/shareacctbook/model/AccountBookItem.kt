@@ -31,4 +31,7 @@ data class AccountBookItem(
     @Column(name = "purchased_place")
     var purchasedPlace: String?,
 
-)
+) {
+    @OneToMany(mappedBy = "item", cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.LAZY)
+    val flows: MutableList<ItemFlow> = mutableListOf()
+}

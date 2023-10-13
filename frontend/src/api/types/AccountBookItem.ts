@@ -1,3 +1,5 @@
+import { ItemFlowEdit } from "@/api/types/ItemFlow";
+
 export type CreateAccountBookItem = {
   accountBookId: number;
   name: string;
@@ -5,6 +7,7 @@ export type CreateAccountBookItem = {
   value: number;
   purchasedAt: number;
   purchasedPlace: string;
+  flows: ItemFlowEdit[];
 };
 
 export type UpdateAccountBookItem = {
@@ -15,4 +18,5 @@ export type UpdateAccountBookItem = {
   value: number;
   purchasedAt: number;
   purchasedPlace: string;
+  flows: ItemFlowEdit[];
 };

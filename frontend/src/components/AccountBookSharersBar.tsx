@@ -2,28 +2,25 @@ import React, { useRef } from "react";
 import { Avatar } from "@nextui-org/react";
 import { AiOutlinePlus } from "react-icons/ai";
 
-import { useAccountBookSharerList } from "@/hooks/useAccountBookSharerList";
+import { AccountBookSharer } from "@/types/AccountBookSharer";
 
 import AccountBookSharerDot from "@/components/AccountBookSharerDot";
 import CreateSharerModal from "@/components/modals/CreateSharerModal";
 
 type AccountBookSharersBarProps = {
-  accountBookId: number;
+  currentUserRole: string;
+  sharerList: AccountBookSharer[];
+  onCreateRequest: (name: string, role: string, email?: string) => void;
+  onRoleUpdateRequest: (id: number, nextRole: string) => void;
 };
 
-function AccountBookSharersBar({ accountBookId }: AccountBookSharersBarProps) {
+function AccountBookSharersBar({ currentUserRole, sharerList, onCreateRequest, onRoleUpdateRequest }: AccountBookSharersBarProps) {
   const createSharerModalRef = useRef<React.ElementRef<typeof CreateSharerModal>>(null);
-
-  const { currentUserRole, sharerList, insertSharer, updateSharer } = useAccountBookSharerList(accountBookId);
-
-  const handleCreateRequest = (name: string, role: string, email?: string) => {
-    insertSharer(accountBookId, name, role, email);
-  }
 
   return (
     <div className="flex">
       {sharerList.map(sharer =>
-        <AccountBookSharerDot currentUserRole={currentUserRole} key={sharer.id} sharer={sharer} onRoleChangeRequest={updateSharer} />
+        <AccountBookSharerDot currentUserRole={currentUserRole} key={sharer.id} sharer={sharer} onRoleChangeRequest={onRoleUpdateRequest} />
       )}
       {currentUserRole === 'OWNER' ?
         <>
@@ -36,7 +33,7 @@ function AccountBookSharersBar({ accountBookId }: AccountBookSharersBarProps) {
             }
             onClick={createSharerModalRef.current?.open}
           />
-          <CreateSharerModal ref={createSharerModalRef} onCreatedRequest={handleCreateRequest} />
+          <CreateSharerModal ref={createSharerModalRef} onCreatedRequest={onCreateRequest} />
         </>
       : ''}
     </div>

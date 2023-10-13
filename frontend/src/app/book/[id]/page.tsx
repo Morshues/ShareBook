@@ -6,6 +6,7 @@ import { Button } from "@nextui-org/react";
 
 import { AccountBookItem } from "@/types/AccountBookItem";
 import { useAccountBook } from "@/hooks/useAccountBook";
+import { useAccountBookSharerList } from "@/hooks/useAccountBookSharerList";
 
 import AccountBookSharersBar from "@/components/AccountBookSharersBar";
 import AccountBookItemList from "@/components/AccountBookItemList";
@@ -20,6 +21,11 @@ export default function AccountBook() {
   const deleteAccountBookItemRef = useRef<React.ElementRef<typeof DeleteAccountBookItem>>(null);
 
   const { accountBook, insertItem, updateItem, deleteItem } = useAccountBook(id);
+  const { currentUserRole, sharerList, insertSharer, updateSharer } = useAccountBookSharerList(id);
+
+  const handleSharerCreateRequest = (name: string, role: string, email?: string) => {
+      insertSharer(id, name, role, email);
+  }
 
   const onEditAccountBookItem = (item: AccountBookItem) => {
     editAccountBookItemRef.current?.openEdit(item);
@@ -36,9 +42,14 @@ export default function AccountBook() {
           <Button onPress={() => editAccountBookItemRef.current?.openCreate()}>Create New Item</Button>
           <h1>{accountBook.name}</h1>
           <p>{accountBook.description}</p>
-          <AccountBookSharersBar accountBookId={id} />
+          <AccountBookSharersBar
+            currentUserRole={currentUserRole}
+            sharerList={sharerList}
+            onCreateRequest={handleSharerCreateRequest}
+            onRoleUpdateRequest={updateSharer}
+          />
           <AccountBookItemList accountBookItemList={accountBook.items || []} onEdit={onEditAccountBookItem} onDelete={onDeleteAccountBookItem} />
-          <AccountBookItemEditor ref={editAccountBookItemRef} accountBookId={accountBook.id} onCreateRequest={insertItem} onEditRequest={updateItem} />
+          <AccountBookItemEditor ref={editAccountBookItemRef} accountBookId={accountBook.id} sharerList={sharerList} onCreateRequest={insertItem} onEditRequest={updateItem} />
           <DeleteAccountBookItem ref={deleteAccountBookItemRef} onDeleteRequest={deleteItem} />
         </div>
       ) : (
