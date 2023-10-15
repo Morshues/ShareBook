@@ -17,6 +17,10 @@ type AccountBookSharersBarProps = {
 function AccountBookSharersBar({ currentUserRole, sharerList, onCreateRequest, onRoleUpdateRequest }: AccountBookSharersBarProps) {
   const createSharerModalRef = useRef<React.ElementRef<typeof CreateSharerModal>>(null);
 
+  const handleCreateSharerModalOpen = () => {
+    createSharerModalRef.current?.open()
+  }
+
   return (
     <div className="flex">
       {sharerList.map((sharer, index) =>
@@ -31,7 +35,7 @@ function AccountBookSharersBar({ currentUserRole, sharerList, onCreateRequest, o
             fallback={
               <AiOutlinePlus size={30} />
             }
-            onClick={createSharerModalRef.current?.open}
+            onClick={handleCreateSharerModalOpen}
           />
           <CreateSharerModal ref={createSharerModalRef} onCreatedRequest={onCreateRequest} />
         </>
