@@ -31,7 +31,7 @@ export const useAccountBook = (accountBookId: number) => {
       return;
     }
     fetchBook().then(/* Do Nothing */);
-  }, [accountBookId, loading]);
+  }, [accountBookId]);
 
   const insertItem = (item: CreateAccountBookItem) => {
     createAccountBookItem(item).then(response => {
