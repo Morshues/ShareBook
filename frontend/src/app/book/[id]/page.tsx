@@ -39,7 +39,7 @@ export default function AccountBook() {
 
   const actionComponents = [(
     // eslint-disable-next-line react/jsx-key
-    <Link color="foreground" onClick={editAccountBookItemRef.current?.openCreate}>
+    <Link color="foreground" onClick={() => editAccountBookItemRef.current?.openCreate()}>
       <AiOutlinePlus size={30} />
     </Link>
   )]

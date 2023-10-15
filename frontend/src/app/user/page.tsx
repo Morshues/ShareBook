@@ -55,7 +55,7 @@ export default function User() {
     <UserProfile user={currentUser} />
   ), (
     // eslint-disable-next-line react/jsx-key
-    <Link color="foreground" onClick={editAccountBookRef.current?.openCreate}>
+    <Link color="foreground" onClick={() => editAccountBookRef.current?.openCreate()}>
       <AiOutlinePlus size={30} />
     </Link>
   )];
