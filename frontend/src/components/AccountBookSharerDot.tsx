@@ -35,6 +35,8 @@ function AccountBookSharerDot({ index, currentUserRole, sharer, onRoleChangeRequ
           as="button"
           className={`ring-${SHARER_COLORS[index] || SHARER_COLOR_NONE}`}
           src={sharer.userImg}
+          showFallback
+          name={sharer.displayName || sharer.userName}
         />
       </DropdownTrigger>
       <DropdownMenu

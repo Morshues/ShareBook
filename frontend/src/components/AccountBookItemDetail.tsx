@@ -28,6 +28,8 @@ function AccountBookItemDetail({ sharerList, item }: AccountBookItemListProps) {
             <Avatar
               size="sm"
               src={sharer.userImg}
+              showFallback
+              name={sharer.displayName || sharer.userName}
               className="justify-self-center"
             />
             <span>{item.flows.find(flow => flow.sharerId === sharer.id)?.value || 0}</span>

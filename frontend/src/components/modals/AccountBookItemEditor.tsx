@@ -185,6 +185,8 @@ const AccountBookItemEditor = forwardRef<AccountBookItemEditorRef, AccountBookIt
             <Avatar
               size="sm"
               src={sharerMap[flow.sharerId].userImg}
+              showFallback
+              name={sharerMap[flow.sharerId].displayName || sharerMap[flow.sharerId].userName}
             />
           }
           labelPlacement="outside"
