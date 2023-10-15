@@ -8,7 +8,7 @@ import { AccountBook } from "@/types/accountBook";
 export const useAccountBook = (accountBookId: number) => {
   const [accountBook, setAccountBook] = useState<AccountBook | null>(null);
   const [loading, setLoading] = useState(false);
-  const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>();
+  const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({});
 
   useEffect(() => {
     const fetchBook = async () => {
