@@ -21,7 +21,7 @@ export default function AccountBook() {
   const deleteAccountBookItemRef = useRef<React.ElementRef<typeof DeleteAccountBookItem>>(null);
 
   const { accountBook, insertItem, updateItem, deleteItem } = useAccountBook(id);
-  const { currentUserRole, sharerList, insertSharer, updateSharer } = useAccountBookSharerList(id);
+  const { currentUserRole, currentSharerId, sharerList, insertSharer, updateSharer } = useAccountBookSharerList(id);
 
   const handleSharerCreateRequest = (name: string, role: string, email?: string) => {
       insertSharer(id, name, role, email);
@@ -49,7 +49,7 @@ export default function AccountBook() {
             onRoleUpdateRequest={updateSharer}
           />
           <AccountBookItemList sharerList={sharerList} accountBookItemList={accountBook.items || []} onEdit={onEditAccountBookItem} onDelete={onDeleteAccountBookItem} />
-          <AccountBookItemEditor ref={editAccountBookItemRef} accountBookId={accountBook.id} sharerList={sharerList} onCreateRequest={insertItem} onEditRequest={updateItem} />
+          <AccountBookItemEditor ref={editAccountBookItemRef} accountBookId={accountBook.id} currentSharerId={currentSharerId} sharerList={sharerList} onCreateRequest={insertItem} onEditRequest={updateItem} />
           <DeleteAccountBookItem ref={deleteAccountBookItemRef} onDeleteRequest={deleteItem} />
         </div>
       ) : (

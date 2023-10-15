@@ -24,13 +24,14 @@ type AccountBookItemEditorRef = {
 
 type AccountBookItemEditorProps = {
   accountBookId: number;
+  currentSharerId: number;
   sharerList: AccountBookSharer[];
   onCreateRequest?: (item: CreateAccountBookItem) => void;
   onEditRequest?: (item: UpdateAccountBookItem) => void;
 };
 
 const AccountBookItemEditor = forwardRef<AccountBookItemEditorRef, AccountBookItemEditorProps>(
-  ({ accountBookId, sharerList, onCreateRequest, onEditRequest }: AccountBookItemEditorProps,
+  ({ accountBookId, currentSharerId, sharerList, onCreateRequest, onEditRequest }: AccountBookItemEditorProps,
   ref,
 ) => {
   const {isOpen, onOpen, onClose, onOpenChange} = useDisclosure();
@@ -56,7 +57,7 @@ const AccountBookItemEditor = forwardRef<AccountBookItemEditorRef, AccountBookIt
     setValue('0');
     setPurchasedDate(new Date().toISOString().substring(0,10));
     setPurchasedPlace('');
-    setFlowMethod('none');
+    setFlowMethod(currentSharerId.toString());
     setFlows(sharerList.map(sharer => {
       return {
         itemId: id,

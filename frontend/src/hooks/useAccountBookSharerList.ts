@@ -4,6 +4,7 @@ import { createAccountBookSharer, getAccountBookSharers, updateRole } from "@/ap
 import { AccountBookSharer } from "@/types/AccountBookSharer";
 
 export const useAccountBookSharerList = (accountBookId: number) => {
+  const [currentSharerId, setCurrentSharerId] = useState<number>(0);
   const [currentUserRole, setCurrentUserRole] = useState('VIEWER');
   const [accountBookSharerList, setAccountBookSharerList] = useState<AccountBookSharer[]>([]);
 
@@ -14,6 +15,7 @@ export const useAccountBookSharerList = (accountBookId: number) => {
         return;
       }
 
+      setCurrentSharerId(response.data.currentSharerId);
       setCurrentUserRole(response.data.currentUserRole);
       setAccountBookSharerList(response.data.list);
     }
@@ -45,5 +47,5 @@ export const useAccountBookSharerList = (accountBookId: number) => {
     })
   }
 
-  return { currentUserRole, sharerList: accountBookSharerList, fetchSharerList: fetchAccountBookSharerList, insertSharer, updateSharer };
+  return { currentUserRole, currentSharerId, sharerList: accountBookSharerList, fetchSharerList: fetchAccountBookSharerList, insertSharer, updateSharer };
 }
