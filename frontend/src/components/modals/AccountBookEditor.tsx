@@ -31,7 +31,7 @@ const AccountBookEditor = forwardRef<EditAccountBookRef, EditAccountBookProps>((
   const [description, setDescription] = useState('');
 
   const isNameInvalid = React.useMemo(() => {
-    return (name.trim() === '' || !/^[a-zA-Z0-9]+$/.test(name))
+    return (name.trim() === '')
   }, [name]);
 
   const openCreate = () => {
