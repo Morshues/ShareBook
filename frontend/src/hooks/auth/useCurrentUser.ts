@@ -31,5 +31,5 @@ export const useCurrentUser = () => {
 
   const isAuthenticated = user != null;
 
-  return { user, loaded, fetchUser, isAuthenticated };
+  return { user, loaded, isAuthenticated };
 };

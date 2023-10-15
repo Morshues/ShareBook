@@ -22,11 +22,11 @@ function AccountBookSharersBar({ currentUserRole, sharerList, onCreateRequest, o
   }
 
   return (
-    <div className="flex">
+    <div className="flex m-1">
       {sharerList.map((sharer, index) =>
         <AccountBookSharerDot index={index} currentUserRole={currentUserRole} key={sharer.id} sharer={sharer} onRoleChangeRequest={onRoleUpdateRequest} />
       )}
-      {currentUserRole === 'OWNER' ?
+      {currentUserRole === 'OWNER' &&
         <>
           <Avatar
             isBordered
@@ -39,7 +39,7 @@ function AccountBookSharersBar({ currentUserRole, sharerList, onCreateRequest, o
           />
           <CreateSharerModal ref={createSharerModalRef} onCreatedRequest={onCreateRequest} />
         </>
-      : ''}
+      }
     </div>
   );
 }

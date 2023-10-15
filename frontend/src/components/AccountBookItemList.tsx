@@ -113,7 +113,7 @@ function AccountBookItemList({ sharerList, accountBookItemList, onEdit, onDelete
             </TableColumn>
           )}
         </TableHeader>
-        <TableBody items={accountBookItemList} emptyContent={"No items to display."}>
+        <TableBody items={accountBookItemList} emptyContent={"No items to display"}>
           {(accountBookItem) => (
             <TableRow key={accountBookItem.id}>
               {(columnKey) => <TableCell>{renderCell(accountBookItem, columnKey)}</TableCell>}

@@ -67,7 +67,7 @@ function AccountBookList({ accountBookList, onEdit, onDelete }: AccountBookListP
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody items={accountBookList}>
+      <TableBody items={accountBookList} emptyContent={"No account books to display"}>
         {(accountBook) => (
           <TableRow key={accountBook.id}>
             {(columnKey) => <TableCell>{renderCell(accountBook, columnKey)}</TableCell>}

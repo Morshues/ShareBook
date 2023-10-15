@@ -2,12 +2,14 @@
 
 import React, { useRef } from "react";
 import { useParams } from "next/navigation";
-import { Button } from "@nextui-org/react";
+import { Link } from "@nextui-org/link";
+import { AiOutlinePlus } from "react-icons/ai";
 
 import { AccountBookItem } from "@/types/AccountBookItem";
 import { useAccountBook } from "@/hooks/useAccountBook";
 import { useAccountBookSharerList } from "@/hooks/useAccountBookSharerList";
 
+import { CommonNavBar } from "@/components/CommonNavBar";
 import AccountBookSharersBar from "@/components/AccountBookSharersBar";
 import AccountBookItemList from "@/components/AccountBookItemList";
 import AccountBookItemEditor from "@/components/modals/AccountBookItemEditor";
@@ -35,13 +37,18 @@ export default function AccountBook() {
     deleteAccountBookItemRef.current?.open(item);
   }
 
+  const actionComponents = [(
+    // eslint-disable-next-line react/jsx-key
+    <Link color="foreground" onClick={editAccountBookItemRef.current?.openCreate}>
+      <AiOutlinePlus size={30} />
+    </Link>
+  )]
+
   return (
     <div>
+      <CommonNavBar title={accountBook?.name} actionComponents={actionComponents} />
       {accountBook ? (
         <div>
-          <Button onPress={() => editAccountBookItemRef.current?.openCreate()}>Create New Item</Button>
-          <h1>{accountBook.name}</h1>
-          <p>{accountBook.description}</p>
           <AccountBookSharersBar
             currentUserRole={currentUserRole}
             sharerList={sharerList}

@@ -1,30 +1,29 @@
 import React from "react";
+import { Avatar } from "@nextui-org/react";
+import { User as NextUser } from "@nextui-org/user";
 
 import { User } from "@/types/user";
 
-type UserProps = {
-  user: User | null;
-};
+interface UserProps {
+  user?: User;
+}
 
 function UserProfile({ user }: UserProps) {
   return (
-    <div>
-      {user && (
-        <div>
-          <div>
-            <strong>Name:</strong> {user.name}
-          </div>
-          <div>
-            <strong>Email:</strong> {user.email}
-          </div>
-          {user.pictureUrl && (
-            <div>
-              <img src={user.pictureUrl} alt={user.name} width="100" />
-            </div>
-          )}
-        </div>
-      )}
-    </div>
+    <>
+      <NextUser
+        name={user?.name}
+        description={user?.email}
+        avatarProps={{
+          src: user?.pictureUrl
+        }}
+        className="hidden sm:flex mt-0.5"
+      />
+      <Avatar
+        src={user?.pictureUrl}
+        className="flex sm:hidden mt-0.5"
+      />
+    </>
   );
 }
 
