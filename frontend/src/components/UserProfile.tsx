@@ -5,7 +5,7 @@ import { User as NextUser } from "@nextui-org/user";
 import { User } from "@/types/user";
 
 interface UserProps {
-  user?: User;
+  user: User | null;
 }
 
 function UserProfile({ user }: UserProps) {
