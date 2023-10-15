@@ -50,7 +50,7 @@ const CreateSharerModal = forwardRef<CreateSharerModalRef, CreateSharerModalProp
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader className="flex flex-col gap-1">Create New Item</ModalHeader>
+            <ModalHeader className="flex flex-col gap-1">Add Sharer</ModalHeader>
             <ModalBody>
               <Input
                 isRequired
@@ -96,4 +96,5 @@ const CreateSharerModal = forwardRef<CreateSharerModalRef, CreateSharerModalProp
   )
 })
 
+CreateSharerModal.displayName = "CreateSharerModal";
 export default CreateSharerModal;

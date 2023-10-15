@@ -20,7 +20,7 @@ export const useAccountBookSharerList = (accountBookId: number) => {
     catch (error) {
       setAccountBookSharerList([]);
     }
-  }, []);
+  }, [accountBookId]);
 
   useEffect(() => {
     fetchAccountBookSharerList().then(/* Do Nothing */);

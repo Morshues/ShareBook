@@ -63,4 +63,5 @@ const DeleteAccountBook = forwardRef<DeleteAccountBookRef, DeleteAccountBookProp
   );
 })
 
+DeleteAccountBook.displayName = "DeleteAccountBook"
 export default DeleteAccountBook;

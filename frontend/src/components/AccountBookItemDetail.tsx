@@ -25,13 +25,14 @@ function AccountBookItemDetail({ sharerList, item }: AccountBookItemListProps) {
       <div className="grid grid-cols-3 items-center text-center justify-center">
         {sharerList.map(sharer => (
           <Avatar
+            key={sharer.id}
             size="sm"
             src={sharer.userImg}
             className="justify-self-center"
           />
         ))}
         {sharerList.map(sharer => (
-          <span>{item.flows.find(flow => flow.sharerId === sharer.id)?.value || 0}</span>
+          <span key={sharer.id}>{item.flows.find(flow => flow.sharerId === sharer.id)?.value || 0}</span>
         ))}
       </div>
     </div>

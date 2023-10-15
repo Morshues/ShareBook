@@ -266,4 +266,5 @@ const AccountBookItemEditor = forwardRef<AccountBookItemEditorRef, AccountBookIt
   );
 })
 
+AccountBookItemEditor.displayName = 'AccountBookItemEditor';
 export default AccountBookItemEditor;

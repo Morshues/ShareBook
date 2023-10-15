@@ -114,4 +114,5 @@ const AccountBookEditor = forwardRef<EditAccountBookRef, EditAccountBookProps>((
   );
 })
 
+AccountBookEditor.displayName = 'AccountBookEditor';
 export default AccountBookEditor;
