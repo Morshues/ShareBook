@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { SortDescriptor } from "@nextui-org/react";
 
 import { getAccountBook, createAccountBookItem, updateAccountBookItem, deleteAccountBookItem } from "@/api/ApiClient";
 import { CreateAccountBookItem, UpdateAccountBookItem } from "@/api/types/AccountBookItem";
@@ -7,6 +8,7 @@ import { AccountBook } from "@/types/accountBook";
 export const useAccountBook = (accountBookId: number) => {
   const [accountBook, setAccountBook] = useState<AccountBook | null>(null);
   const [loading, setLoading] = useState(false);
+  const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({});
 
   useEffect(() => {
     const fetchBook = async () => {
@@ -32,6 +34,36 @@ export const useAccountBook = (accountBookId: number) => {
     }
     fetchBook().then(/* Do Nothing */);
   }, [accountBookId]);
+
+  const sortItems = (sortDescriptor: SortDescriptor) => {
+    setSortDescriptor(sortDescriptor);
+    setAccountBook(prevAccountBook => {
+      if (prevAccountBook == null) return null;
+
+      return {
+        ...prevAccountBook,
+        items: prevAccountBook?.items.sort((a, b) => {
+          let first = a[sortDescriptor.column as keyof typeof a];
+          let second = b[sortDescriptor.column as keyof typeof b];
+          let cmp = 0;
+          switch (typeof first) {
+            case "number":
+              cmp = (first as number) < (second as number) ? -1 : 1;
+              break;
+            case "string":
+              cmp = (parseInt(first) || first) < (parseInt(second as string) || second) ? -1 : 1;
+              break;
+          }
+
+          if (sortDescriptor.direction === "descending") {
+            cmp *= -1;
+          }
+
+          return cmp;
+        })
+      }
+    })
+  }
 
   const insertItem = (item: CreateAccountBookItem) => {
     createAccountBookItem(item).then(response => {
@@ -70,5 +102,5 @@ export const useAccountBook = (accountBookId: number) => {
   }
 
 
-  return { accountBook, loading, insertItem, updateItem, deleteItem };
+  return { accountBook, loading, sortDescriptor, sortItems, insertItem, updateItem, deleteItem };
 }

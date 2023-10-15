@@ -8,6 +8,7 @@ import {
   TableCell,
   Tooltip,
   Popover, PopoverTrigger, PopoverContent,
+  SortDescriptor,
 } from "@nextui-org/react";
 import { RiDeleteBin7Fill } from "react-icons/ri";
 import { MdDocumentScanner, MdModeEditOutline } from "react-icons/md";
@@ -20,7 +21,9 @@ import AccountBookItemDetail from "@/components/AccountBookItemDetail";
 
 type AccountBookItemListProps = {
   sharerList: AccountBookSharer[];
+  sortDescriptor: SortDescriptor;
   accountBookItemList: AccountBookItem[];
+  onSortRequest: (sortDescription: SortDescriptor) => void;
   onEdit: (accountBookItem: AccountBookItem) => void;
   onDelete: (accountBookItem: AccountBookItem) => void;
 };
@@ -29,11 +32,13 @@ const accountBookItemColumns: {name: string, uid: string, align: ('start'|'end'|
   {name: "Name", uid: "name", align: "start", className: "w-40"},
   {name: "", uid: "price_bar", align: "center", className: "w-auto"},
   {name: "Price", uid: "value", align: "end", className: "w-28 text-end"},
-  {name: "Purchased At", uid: "purchased_at", align: "start", className: "w-20"},
+  {name: "Purchased At", uid: "purchasedAt", align: "start", className: "w-20"},
   {name: "Actions", uid: "actions", align: "center", className: "w-20"},
 ];
 
-function AccountBookItemList({ sharerList, accountBookItemList, onEdit, onDelete }: AccountBookItemListProps) {
+const allowSortingColumns = ["name", "value", "purchasedAt"];
+
+function AccountBookItemList({ sharerList, sortDescriptor, accountBookItemList, onSortRequest, onEdit, onDelete }: AccountBookItemListProps) {
   const handleEditClick = React.useCallback((accountBookItem: AccountBookItem) => () => {
     onEdit(accountBookItem);
   }, [onEdit]);
@@ -60,7 +65,7 @@ function AccountBookItemList({ sharerList, accountBookItemList, onEdit, onDelete
         return (
           <PriceBar flows={accountBookItem.flows} value={accountBookItem.value} />
         )
-      case "purchased_at":
+      case "purchasedAt":
         let purchasedDate = new Date(accountBookItem.purchasedAt);
         return purchasedDate.toLocaleDateString();
       case "actions":
@@ -105,10 +110,15 @@ function AccountBookItemList({ sharerList, accountBookItemList, onEdit, onDelete
 
   return (
     <>
-      <Table aria-label="Example table with custom cells" className="table-fixed">
+      <Table
+        aria-label="Example table with custom cells"
+        className="table-fixed"
+        onSortChange={onSortRequest}
+        sortDescriptor={sortDescriptor}
+      >
         <TableHeader columns={accountBookItemColumns}>
           {(column) => (
-            <TableColumn key={column.uid} align={column.align} className={column.className}>
+            <TableColumn key={column.uid} align={column.align} className={column.className} allowsSorting={allowSortingColumns.includes(column.uid)}>
               {column.name}
             </TableColumn>
           )}
