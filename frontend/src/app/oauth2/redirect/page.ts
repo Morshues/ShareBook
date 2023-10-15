@@ -18,7 +18,7 @@ const OAuth2RedirectHandler: React.FC = () => {
     } else {
       router.push('/login?' + error);
     }
-  }, []);
+  }, [router, searchParams]);
 
   return null;
 }

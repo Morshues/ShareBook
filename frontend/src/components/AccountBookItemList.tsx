@@ -34,13 +34,13 @@ const accountBookItemColumns: {name: string, uid: string, align: ('start'|'end'|
 ];
 
 function AccountBookItemList({ sharerList, accountBookItemList, onEdit, onDelete }: AccountBookItemListProps) {
-  const handleEditClick = (accountBookItem: AccountBookItem) => () => {
+  const handleEditClick = React.useCallback((accountBookItem: AccountBookItem) => () => {
     onEdit(accountBookItem);
-  }
+  }, [onEdit]);
 
-  const handleDeleteClick = (accountBookItem: AccountBookItem) => () => {
+  const handleDeleteClick = React.useCallback((accountBookItem: AccountBookItem) => () => {
     onDelete(accountBookItem);
-  }
+  }, [onDelete]);
 
   const renderCell = React.useCallback((accountBookItem: AccountBookItem, columnKey: React.Key) => {
     switch (columnKey) {
@@ -87,7 +87,7 @@ function AccountBookItemList({ sharerList, accountBookItemList, onEdit, onDelete
       default:
         return "";
     }
-  }, []);
+  }, [sharerList, handleEditClick, handleDeleteClick]);
 
   const totalSum = accountBookItemList.reduce((accumulator: number, item: AccountBookItem) => {
     return accumulator + item.value;

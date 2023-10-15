@@ -25,18 +25,14 @@ export default function User() {
 
   useEffect(() => {
     if (loaded && !isAuthenticated) {
-      redirectToLogin();
+      router.push('/login');
     }
-  }, [isAuthenticated, loaded]);
+  }, [isAuthenticated, loaded, router]);
 
   const signOut = () => {
     clearToken();
-    redirectToLogin();
-  }
-
-  const redirectToLogin = () => {
     router.push('/login');
-  };
+  }
 
   const onEditAccountBook = (accountBook: AccountBook) => {
     editAccountBookRef.current?.openEdit(accountBook);

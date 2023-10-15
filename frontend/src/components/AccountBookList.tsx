@@ -20,13 +20,14 @@ const accountBookColumns = [
 ];
 
 function AccountBookList({ accountBookList, onEdit, onDelete }: AccountBookListProps) {
-  const handleEditClick = (accountBook: AccountBook) => () => {
-    onEdit(accountBook);
-  }
 
-  const handleDeleteClick = (accountBook: AccountBook) => () => {
+  const handleEditClick = React.useCallback((accountBook: AccountBook) => () => {
+    onEdit(accountBook);
+  }, [onEdit]);
+
+  const handleDeleteClick = React.useCallback((accountBook: AccountBook) => () => {
     onDelete(accountBook);
-  }
+  }, [onDelete]);
 
   const renderCell = React.useCallback((accountBook: AccountBook, columnKey: React.Key) => {
     switch (columnKey) {
@@ -55,7 +56,7 @@ function AccountBookList({ accountBookList, onEdit, onDelete }: AccountBookListP
       default:
         return "";
     }
-  }, []);
+  }, [handleEditClick, handleDeleteClick]);
 
   return (
     <Table aria-label="Example table with custom cells">

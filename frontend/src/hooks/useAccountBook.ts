@@ -9,29 +9,29 @@ export const useAccountBook = (accountBookId: number) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    const fetchBook = async () => {
+      setLoading(true);
+      try {
+        const bookResponse = await getAccountBook(accountBookId);
+        if (bookResponse == null || bookResponse.status != 'success') {
+          return;
+        }
+
+        setAccountBook(bookResponse.data);
+      }
+      catch (error) {
+        setAccountBook(null);
+      }
+      finally {
+        setLoading(false);
+      }
+    };
+
     if (loading) {
       return;
     }
     fetchBook().then(/* Do Nothing */);
-  }, []);
-
-  const fetchBook = async () => {
-    setLoading(true);
-    try {
-      const bookResponse = await getAccountBook(accountBookId);
-      if (bookResponse == null || bookResponse.status != 'success') {
-        return;
-      }
-
-      setAccountBook(bookResponse.data);
-    }
-    catch (error) {
-      setAccountBook(null);
-    }
-    finally {
-      setLoading(false);
-    }
-  };
+  }, [accountBookId, loading]);
 
   const insertItem = (item: CreateAccountBookItem) => {
     createAccountBookItem(item).then(response => {
@@ -70,5 +70,5 @@ export const useAccountBook = (accountBookId: number) => {
   }
 
 
-  return { accountBook, fetchBook, loading, insertItem, updateItem, deleteItem };
+  return { accountBook, loading, insertItem, updateItem, deleteItem };
 }
