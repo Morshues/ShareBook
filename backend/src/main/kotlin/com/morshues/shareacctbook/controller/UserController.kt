@@ -17,10 +17,7 @@ class UserController(
     @GetMapping("/user")
     fun currentUser(@CurrentUser userPrincipal: UserPrincipal): ResponseEntity<ApiResponse<UserResponse>> {
         val user = userService.getUserFromPrincipal(userPrincipal)
-        val response = ApiResponse(
-            status = "success",
-            data = UserResponse(user),
-        )
+        val response = ApiResponse.success(UserResponse(user))
         return ResponseEntity.ok(response)
     }
 

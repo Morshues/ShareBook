@@ -25,10 +25,7 @@ class AccountBookController(
     fun getAccountBookList(@CurrentUser userPrincipal: UserPrincipal): ResponseEntity<ApiResponse<List<ShowAccountBookDTO>>> {
         val user = userService.getUserFromPrincipal(userPrincipal)
         val accountBooks = user.accountBooks.map { accountBookConverter.toShowDTO(it) }
-        val response = ApiResponse(
-            status = "success",
-            data = accountBooks,
-        )
+        val response = ApiResponse.success(accountBooks)
         return ResponseEntity(response, HttpStatus.OK)
     }
 
@@ -39,10 +36,7 @@ class AccountBookController(
     ): ResponseEntity<ApiResponse<ShowAccountBookDTO>> {
         val user = userService.getUserFromPrincipal(userPrincipal)
         val accountBookDto = accountBookService.findAccountBook(user, accountBookId)
-        val response = ApiResponse(
-            status = "success",
-            data = accountBookDto,
-        )
+        val response = ApiResponse.success(accountBookDto)
         return ResponseEntity(response, HttpStatus.CREATED)
     }
 
@@ -53,10 +47,7 @@ class AccountBookController(
     ): ResponseEntity<ApiResponse<ShowAccountBookDTO>> {
         val user = userService.getUserFromPrincipal(userPrincipal)
         val savedAccountBookDto = accountBookService.createAccountBookAndAssignOwner(user, createAccountBookDTO)
-        val response = ApiResponse(
-            status = "success",
-            data = savedAccountBookDto,
-        )
+        val response = ApiResponse.success(savedAccountBookDto)
         return ResponseEntity(response, HttpStatus.CREATED)
     }
 
@@ -67,10 +58,7 @@ class AccountBookController(
     ): ResponseEntity<ApiResponse<ShowAccountBookDTO>> {
         val user = userService.getUserFromPrincipal(userPrincipal)
         val savedBookDto = accountBookService.updateAccountBook(user, accountBookDTO)
-        val response = ApiResponse(
-            status = "success",
-            data = savedBookDto,
-        )
+        val response = ApiResponse.success(savedBookDto)
         return ResponseEntity.ok(response)
     }
 
@@ -79,12 +67,7 @@ class AccountBookController(
         @CurrentUser userPrincipal: UserPrincipal,
         @PathVariable(value = "accountBookId") accountBookId: Long,
     ): ResponseEntity<ApiResponse<Nothing>> {
-        val user = userService.getUserFromPrincipal(userPrincipal)
-        accountBookService.deleteAccountBook(user, accountBookId)
-        val response = ApiResponse(
-            status = "success",
-            data = null,
-        )
+        val response = ApiResponse.success()
         return ResponseEntity(response, HttpStatus.OK)
     }
 }

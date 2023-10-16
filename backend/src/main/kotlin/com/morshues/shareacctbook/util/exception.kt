@@ -25,20 +25,13 @@ class CustomExceptionHandler {
 
     @ExceptionHandler(HttpMessageNotReadableException::class)
     fun handleMissingRequestBody(ex: HttpMessageNotReadableException): ResponseEntity<ApiResponse<*>> {
-        val response = ApiResponse<Any>(
-            status = "error",
-            data = null,
-            message = "Required request body is missing",
-            errors = null
-        )
+        val response = ApiResponse.error("Required request body is missing")
         return ResponseEntity.badRequest().body(response)
     }
 
     @ExceptionHandler(ConstraintViolationException::class)
     fun handleMissingRequestBody(ex: ConstraintViolationException): ResponseEntity<ApiResponse<*>> {
-        val response = ApiResponse<Any>(
-            status = "error",
-            data = null,
+        val response = ApiResponse.error(
             message = "Request body is invalid",
             errors = ex.constraintViolations.map { it.message }
         )

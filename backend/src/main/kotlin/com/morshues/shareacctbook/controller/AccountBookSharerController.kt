@@ -23,10 +23,7 @@ class AccountBookSharerController(
     ): ResponseEntity<ApiResponse<AccountBookSharerListDTO>> {
         val user = userService.getUserFromPrincipal(userPrincipal)
         val responseDto = accountBookSharerService.findAccountBookSharers(user, accountBookId)
-        val response = ApiResponse(
-            status = "success",
-            data = responseDto,
-        )
+        val response = ApiResponse.success(responseDto)
         return ResponseEntity(response, HttpStatus.CREATED)
     }
 
@@ -37,10 +34,7 @@ class AccountBookSharerController(
     ): ResponseEntity<ApiResponse<AccountBookSharerDTO>> {
         val user = userService.getUserFromPrincipal(userPrincipal)
         val savedSharerDto = accountBookSharerService.createAccountBookSharer(user, createSharerDTO)
-        val response = ApiResponse(
-            status = "success",
-            data = savedSharerDto,
-        )
+        val response = ApiResponse.success(savedSharerDto)
         return ResponseEntity(response, HttpStatus.CREATED)
     }
 
@@ -51,10 +45,7 @@ class AccountBookSharerController(
     ): ResponseEntity<ApiResponse<String>> {
         val user = userService.getUserFromPrincipal(userPrincipal)
         val result = accountBookSharerService.updateRole(user, updateRoleDTO)
-        val response = ApiResponse(
-            status = "success",
-            data = result,
-        )
+        val response = ApiResponse.success(result)
         return ResponseEntity(response, HttpStatus.CREATED)
     }
 

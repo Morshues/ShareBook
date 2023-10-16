@@ -14,11 +14,9 @@ class InvalidArgumentException(message: String) : RuntimeException(message)
 class GlobalExceptionHandler {
     @ExceptionHandler(InvalidArgumentException::class)
     fun handleIllegalArgumentException(ex: InvalidArgumentException): ResponseEntity<ApiResponse<*>> {
-        val response = ApiResponse<Any>(
-            status = "error",
-            data = ex.message,
+        val response = ApiResponse.error(
             message = "Required request body is invalid",
-            errors = null
+            errors = ex.message?.let { listOf(it) } ?: emptyList()
         )
         return ResponseEntity.badRequest().body(response)
     }

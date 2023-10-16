@@ -15,7 +15,7 @@ export const useAccountBook = (accountBookId: number) => {
       setLoading(true);
       try {
         const bookResponse = await getAccountBook(accountBookId);
-        if (bookResponse == null || bookResponse.status != 'success') {
+        if (bookResponse == null || bookResponse.status != 'SUCCESS') {
           return;
         }
 

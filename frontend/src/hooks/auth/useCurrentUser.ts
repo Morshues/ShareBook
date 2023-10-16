@@ -11,7 +11,7 @@ export const useCurrentUser = () => {
     setLoaded(false);
     try {
       const userResponse = await getCurrentUser();
-      if (userResponse == null || userResponse.status != 'success') {
+      if (userResponse == null || userResponse.status != 'SUCCESS') {
         setLoaded(true);
         return;
       }

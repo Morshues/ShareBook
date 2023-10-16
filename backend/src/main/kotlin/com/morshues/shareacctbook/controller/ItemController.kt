@@ -23,10 +23,7 @@ class ItemController(
     ): ResponseEntity<ApiResponse<AccountBookItemShowDTO>> {
         val user = userService.getUserFromPrincipal(userPrincipal)
         val savedItemDto = accountBookItemService.createAccountBookItem(user, accountBookItemCreateDTO)
-        val response = ApiResponse(
-            status = "success",
-            data = savedItemDto,
-        )
+        val response = ApiResponse.success(savedItemDto)
         return ResponseEntity(response, HttpStatus.CREATED)
     }
 
@@ -37,10 +34,7 @@ class ItemController(
     ): ResponseEntity<ApiResponse<AccountBookItemShowDTO>> {
         val user = userService.getUserFromPrincipal(userPrincipal)
         val savedItemDto = accountBookItemService.updateAccountBookItem(user, accountBookItemDTO)
-        val response = ApiResponse(
-            status = "success",
-            data = savedItemDto,
-        )
+        val response = ApiResponse.success(savedItemDto)
         return ResponseEntity.ok(response)
     }
 
@@ -51,10 +45,7 @@ class ItemController(
     ): ResponseEntity<ApiResponse<Nothing>> {
         val user = userService.getUserFromPrincipal(userPrincipal)
         accountBookItemService.deleteAccountBookItem(user, accountBookItemId)
-        val response = ApiResponse(
-            status = "success",
-            data = null,
-        )
+        val response = ApiResponse.success()
         return ResponseEntity(response, HttpStatus.OK)
     }
 }

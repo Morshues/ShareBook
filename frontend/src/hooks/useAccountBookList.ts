@@ -14,7 +14,7 @@ export const useAccountBookList = () => {
   const fetchAccountBookList = useCallback(async () => {
     try {
       const response = await getAccountBookList();
-      if (response == null || response.status != 'success') {
+      if (response == null || response.status != 'SUCCESS') {
         return;
       }
 

@@ -26,6 +26,7 @@ class SecurityConfiguration(
     private val oAuth2AuthenticationFailureHandler: OAuth2AuthenticationFailureHandler,
     private val tokenProvider: TokenProvider,
     private val cookieAuthorizationRequestRepository: HttpCookieOAuth2AuthorizationRequestRepository,
+    private val customAuthenticationEntryPoint: CustomAuthenticationEntryPoint,
 ) {
 
     @Bean
@@ -59,6 +60,9 @@ class SecurityConfiguration(
                 }
                 .successHandler(oAuth2AuthenticationSuccessHandler)
                 .failureHandler(oAuth2AuthenticationFailureHandler)
+            }
+            .exceptionHandling { it
+                .authenticationEntryPoint(customAuthenticationEntryPoint)
             }
 
         http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter::class.java)

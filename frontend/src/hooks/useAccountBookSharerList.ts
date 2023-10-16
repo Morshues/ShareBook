@@ -11,7 +11,7 @@ export const useAccountBookSharerList = (accountBookId: number) => {
   const fetchAccountBookSharerList = useCallback(async () => {
     try {
       const response = await getAccountBookSharers(accountBookId);
-      if (response == null || response.status != 'success') {
+      if (response == null || response.status != 'SUCCESS') {
         return;
       }
 
