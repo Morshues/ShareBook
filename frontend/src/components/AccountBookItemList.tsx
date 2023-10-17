@@ -8,6 +8,7 @@ import {
   TableCell,
   Tooltip,
   Popover, PopoverTrigger, PopoverContent,
+  Spinner,
   SortDescriptor,
 } from "@nextui-org/react";
 import { RiDeleteBin7Fill } from "react-icons/ri";
@@ -21,6 +22,7 @@ import AccountBookItemDetail from "@/components/AccountBookItemDetail";
 
 type AccountBookItemListProps = {
   sharerList: AccountBookSharer[];
+  loading: boolean;
   sortDescriptor: SortDescriptor;
   accountBookItemList: AccountBookItem[];
   onSortRequest: (sortDescription: SortDescriptor) => void;
@@ -38,7 +40,7 @@ const accountBookItemColumns: {name: string, uid: string, align: ('start'|'end'|
 
 const allowSortingColumns = ["name", "value", "purchasedAt"];
 
-function AccountBookItemList({ sharerList, sortDescriptor, accountBookItemList, onSortRequest, onEdit, onDelete }: AccountBookItemListProps) {
+function AccountBookItemList({ sharerList, loading, sortDescriptor, accountBookItemList, onSortRequest, onEdit, onDelete }: AccountBookItemListProps) {
   const handleEditClick = React.useCallback((accountBookItem: AccountBookItem) => () => {
     onEdit(accountBookItem);
   }, [onEdit]);
@@ -123,7 +125,10 @@ function AccountBookItemList({ sharerList, sortDescriptor, accountBookItemList, 
             </TableColumn>
           )}
         </TableHeader>
-        <TableBody items={accountBookItemList} emptyContent={"No items to display"}>
+        <TableBody
+          items={accountBookItemList}
+          emptyContent={loading ? <Spinner color="white" /> : "No items to display"}
+        >
           {(accountBookItem) => (
             <TableRow key={accountBookItem.id}>
               {(columnKey) => <TableCell>{renderCell(accountBookItem, columnKey)}</TableCell>}

@@ -6,11 +6,15 @@ import { CreateAccountBookItem, UpdateAccountBookItem } from "@/api/types/Accoun
 import { AccountBook } from "@/types/accountBook";
 
 export const useAccountBook = (accountBookId: number) => {
+  const [isInitialized, setIsInitialized] = useState(false);
   const [accountBook, setAccountBook] = useState<AccountBook | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({});
 
   useEffect(() => {
+    if (isInitialized) {
+      return;
+    }
     const fetchBook = async () => {
       setLoading(true);
       try {
@@ -27,10 +31,11 @@ export const useAccountBook = (accountBookId: number) => {
       }
       finally {
         setLoading(false);
+        setIsInitialized(true);
       }
     };
 
-    if (loading) {
+    if (loading && isInitialized) {
       return;
     }
     fetchBook().then(/* Do Nothing */);

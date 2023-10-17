@@ -22,15 +22,21 @@ export default function AccountBook() {
   const editAccountBookItemRef = useRef<React.ElementRef<typeof AccountBookItemEditor>>(null);
   const deleteAccountBookItemRef = useRef<React.ElementRef<typeof DeleteAccountBookItem>>(null);
 
-  const { accountBook, sortDescriptor, sortItems, insertItem, updateItem, deleteItem } = useAccountBook(id);
+  const { accountBook, loading, sortDescriptor, sortItems, insertItem, updateItem, deleteItem } = useAccountBook(id);
   const { currentUserRole, currentSharerId, sharerList, insertSharer, updateSharer } = useAccountBookSharerList(id);
 
   const handleSharerCreateRequest = (name: string, role: string, email?: string) => {
       insertSharer(id, name, role, email);
   }
 
+  const onCreateAccountBookItem = () => {
+    if (accountBook == null) return;
+    editAccountBookItemRef.current?.openCreate(accountBook.id);
+  }
+
   const onEditAccountBookItem = (item: AccountBookItem) => {
-    editAccountBookItemRef.current?.openEdit(item);
+    if (accountBook == null) return;
+    editAccountBookItemRef.current?.openEdit(accountBook.id, item);
   }
 
   const onDeleteAccountBookItem = (item: AccountBookItem) => {
@@ -39,43 +45,39 @@ export default function AccountBook() {
 
   const actionComponents = [(
     // eslint-disable-next-line react/jsx-key
-    <Link color="foreground" onClick={() => editAccountBookItemRef.current?.openCreate()}>
+    <Link color="foreground" onClick={onCreateAccountBookItem}>
       <AiOutlinePlus size={30} />
     </Link>
   )]
 
   return (
     <div>
-      <CommonNavBar title={accountBook?.name} actionComponents={actionComponents} />
-      {accountBook ? (
-        <div>
-          <AccountBookSharersBar
-            currentUserRole={currentUserRole}
-            sharerList={sharerList}
-            onCreateRequest={handleSharerCreateRequest}
-            onRoleUpdateRequest={updateSharer}
-          />
-          <AccountBookItemList
-            sharerList={sharerList}
-            accountBookItemList={accountBook.items || []}
-            sortDescriptor={sortDescriptor}
-            onSortRequest={sortItems}
-            onEdit={onEditAccountBookItem}
-            onDelete={onDeleteAccountBookItem}
-          />
-          <AccountBookItemEditor
-            ref={editAccountBookItemRef}
-            accountBookId={accountBook.id}
-            currentSharerId={currentSharerId}
-            sharerList={sharerList}
-            onCreateRequest={insertItem}
-            onEditRequest={updateItem}
-          />
-          <DeleteAccountBookItem ref={deleteAccountBookItemRef} onDeleteRequest={deleteItem} />
-        </div>
-      ) : (
-        <p>Loading...</p>
-      )}
+      <CommonNavBar title={accountBook?.name} actionComponents={accountBook ? actionComponents : []} />
+      <div>
+        <AccountBookSharersBar
+          currentUserRole={currentUserRole}
+          sharerList={sharerList}
+          onCreateRequest={handleSharerCreateRequest}
+          onRoleUpdateRequest={updateSharer}
+        />
+        <AccountBookItemList
+          sharerList={sharerList}
+          loading={loading}
+          accountBookItemList={accountBook?.items || []}
+          sortDescriptor={sortDescriptor}
+          onSortRequest={sortItems}
+          onEdit={onEditAccountBookItem}
+          onDelete={onDeleteAccountBookItem}
+        />
+        <AccountBookItemEditor
+          ref={editAccountBookItemRef}
+          currentSharerId={currentSharerId}
+          sharerList={sharerList}
+          onCreateRequest={insertItem}
+          onEditRequest={updateItem}
+        />
+        <DeleteAccountBookItem ref={deleteAccountBookItemRef} onDeleteRequest={deleteItem} />
+      </div>
     </div>
   )
 }

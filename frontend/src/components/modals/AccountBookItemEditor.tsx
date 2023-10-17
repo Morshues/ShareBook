@@ -18,12 +18,11 @@ import { CreateAccountBookItem, UpdateAccountBookItem } from "@/api/types/Accoun
 import { ItemFlowEdit } from "@/api/types/ItemFlow";
 
 type AccountBookItemEditorRef = {
-  openCreate: () => void;
-  openEdit: (accountBookItem: AccountBookItem) => void;
+  openCreate: (accountBookId: number) => void;
+  openEdit: (accountBookId: number, accountBookItem: AccountBookItem) => void;
 }
 
 type AccountBookItemEditorProps = {
-  accountBookId: number;
   currentSharerId: number;
   sharerList: AccountBookSharer[];
   onCreateRequest?: (item: CreateAccountBookItem) => void;
@@ -31,11 +30,12 @@ type AccountBookItemEditorProps = {
 };
 
 const AccountBookItemEditor = forwardRef<AccountBookItemEditorRef, AccountBookItemEditorProps>(
-  ({ accountBookId, currentSharerId, sharerList, onCreateRequest, onEditRequest }: AccountBookItemEditorProps,
+  ({ currentSharerId, sharerList, onCreateRequest, onEditRequest }: AccountBookItemEditorProps,
   ref,
 ) => {
   const {isOpen, onOpen, onClose, onOpenChange} = useDisclosure();
   const [editorType, setEditorType] = useState<'creator' | 'editor'>('creator');
+  const [accountBookId, setAccountBookId] = useState<number>(0);
   const [id, setId] = useState(0);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -50,8 +50,9 @@ const AccountBookItemEditor = forwardRef<AccountBookItemEditorRef, AccountBookIt
     return (name.trim() === '')
   }, [name]);
 
-  const openCreate = () => {
+  const openCreate = (accountBookId: number) => {
     setEditorType('creator');
+    setAccountBookId(accountBookId);
     setName("");
     setDescription("");
     setValue('0');
@@ -68,8 +69,9 @@ const AccountBookItemEditor = forwardRef<AccountBookItemEditorRef, AccountBookIt
     onOpen();
   };
 
-  const openEdit = (item: AccountBookItem) => {
+  const openEdit = (accountBookId: number, item: AccountBookItem) => {
     setEditorType('editor');
+    setAccountBookId(accountBookId);
     setId(item.id);
     setName(item.name);
     setDescription(item.description);
