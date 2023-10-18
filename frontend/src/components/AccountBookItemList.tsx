@@ -8,6 +8,7 @@ import {
   TableCell,
   Tooltip,
   Popover, PopoverTrigger, PopoverContent,
+  Avatar,
   Spinner,
   SortDescriptor,
 } from "@nextui-org/react";
@@ -19,6 +20,7 @@ import { AccountBookSharer } from "@/types/AccountBookSharer";
 
 import PriceBar from "@/components/PriceBar";
 import AccountBookItemDetail from "@/components/AccountBookItemDetail";
+import { useAccountBookSummary } from "@/hooks/useAccountBookSummary";
 
 type AccountBookItemListProps = {
   sharerList: AccountBookSharer[];
@@ -41,6 +43,8 @@ const accountBookItemColumns: {name: string, uid: string, align: ('start'|'end'|
 const allowSortingColumns = ["name", "value", "purchasedAt"];
 
 function AccountBookItemList({ sharerList, loading, sortDescriptor, accountBookItemList, onSortRequest, onEdit, onDelete }: AccountBookItemListProps) {
+  const { totalSum, summaryBySharerId } = useAccountBookSummary(accountBookItemList, sharerList);
+
   const handleEditClick = React.useCallback((accountBookItem: AccountBookItem) => () => {
     onEdit(accountBookItem);
   }, [onEdit]);
@@ -96,20 +100,6 @@ function AccountBookItemList({ sharerList, loading, sortDescriptor, accountBookI
     }
   }, [sharerList, handleEditClick, handleDeleteClick]);
 
-  const totalSum = accountBookItemList.reduce((accumulator: number, item: AccountBookItem) => {
-    return accumulator + item.value;
-  }, 0);
-
-  const sumBySharerId = accountBookItemList.reduce<{[key: number]: ({value:number, sharerId: number})}>((acc, item) => {
-    item.flows.forEach(flow => {
-      if (!acc[flow.sharerId]) {
-        acc[flow.sharerId] = {sharerId: flow.sharerId, value: 0};
-      }
-      acc[flow.sharerId].value += flow.value;
-    });
-    return acc;
-  }, {});
-
   return (
     <>
       <Table
@@ -138,7 +128,21 @@ function AccountBookItemList({ sharerList, loading, sortDescriptor, accountBookI
       </Table>
       <div>
         <h2>Sum: {totalSum}</h2>
-        <PriceBar flows={Object.values(sumBySharerId)} value={totalSum} showNumber={true} />
+        <PriceBar flows={summaryBySharerId} value={totalSum} showNumber={true} />
+        <div className="flex gap-6 mt-8">
+          {summaryBySharerId.map(summary => (
+            <span key={summary.sharerId} className="flex flex-col items-center text-center justify-center">
+              <Avatar
+                size="sm"
+                src={summary.sharer.userImg}
+                showFallback
+                name={summary.sharer.displayName || summary.sharer.userName}
+                className="justify-self-center"
+              />
+              <span>{summary.shares}</span>
+            </span>
+          ))}
+        </div>
       </div>
     </>
   );
